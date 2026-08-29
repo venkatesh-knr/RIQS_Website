@@ -7,6 +7,7 @@ import WhyUs from "./components/WhyUs";
 import Certifications from "./components/Certifications";
 import Contact from "./components/Contact";
 import Footer from "./components/Footer";
+import BackToTop from "./components/BackToTop";
 
 function App() {
   return (
@@ -20,6 +21,7 @@ function App() {
       <Certifications />
       <Contact />
       <Footer />
+      <BackToTop />
     </>
   );
 }
