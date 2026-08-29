@@ -29,13 +29,22 @@ export default function Hero() {
           Integrity • Quality • Excellence
         </p>
         <h1 className="font-heading text-4xl font-bold leading-tight text-white sm:text-5xl lg:text-6xl">
-          Trusted Inspection &amp; Quality Solutions for the Oil &amp; Gas,
-          Energy and Industrial Sectors
+          Trusted Inspection &amp; Quality Solutions
         </h1>
+        <p className="mx-auto mt-5 max-w-3xl text-base font-semibold text-steel-300 sm:text-lg">
+          Independent Inspection | Quality Assurance | Technical Services
+        </p>
         <p className="mx-auto mt-6 max-w-3xl text-base text-steel-100/90 sm:text-lg">
-          Delivering independent inspection, QA/QC, welding, coating, NDT
-          coordination, and technical consultancy services to ensure safety,
-          compliance, and operational excellence.
+          RIQS – Ritvish Inspection &amp; Quality Services provides
+          professional inspection, quality assurance, and technical services
+          to the Oil &amp; Gas, Petrochemical, Energy, Marine, Construction,
+          and Industrial sectors.
+        </p>
+        <p className="mx-auto mt-4 max-w-3xl text-base text-steel-100/90 sm:text-lg">
+          We support clients, EPC contractors, fabrication yards, and project
+          teams in maintaining the highest standards of quality, safety,
+          integrity, and regulatory compliance throughout the project
+          lifecycle.
         </p>
 
         <div className="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row">
@@ -46,10 +55,10 @@ export default function Hero() {
             Request a Quote
           </a>
           <a
-            href="#contact"
+            href="#services"
             className="w-full rounded-md border-2 border-steel-300/60 px-8 py-3.5 text-center text-sm font-semibold text-white transition-colors hover:border-steel-300 hover:bg-white/5 sm:w-auto"
           >
-            Contact Us
+            Our Services
           </a>
         </div>
       </div>

@@ -1,10 +1,10 @@
 import logo from "../assets/logo.png";
 
 const QUICK_LINKS = [
-  { label: "About", href: "#about" },
+  { label: "Home", href: "#top" },
+  { label: "About Us", href: "#about" },
   { label: "Services", href: "#services" },
   { label: "Industries", href: "#industries" },
-  { label: "Why Us", href: "#why-us" },
   { label: "Certifications", href: "#certifications" },
   { label: "Contact", href: "#contact" },
 ];
@@ -26,8 +26,9 @@ export default function Footer() {
             <p className="mt-4 text-sm font-medium text-steel-300">
               Integrity | Quality | Excellence
             </p>
-            <p className="mt-3 text-sm text-steel-100/80">
-              Providing trusted inspection and quality solutions worldwide.
+            <p className="mt-3 text-xs text-steel-100/70">
+              Inspection • QA/QC • Welding • NDT • Coating • Technical
+              Services
             </p>
           </div>
 
@@ -63,8 +64,14 @@ export default function Footer() {
         </div>
 
         <div className="mt-10 border-t border-steel-700/40 pt-6 text-center text-xs text-steel-100/60">
-          © {year} RIQS – Ritvish Inspection &amp; Quality Services. All
-          rights reserved.
+          <p>
+            © {year} RIQS – Ritvish Inspection &amp; Quality Services. All
+            Rights Reserved.
+          </p>
+          <p className="mt-1">
+            Professional Inspection &amp; Quality Solutions for the Energy
+            and Industrial Sectors.
+          </p>
         </div>
       </div>
     </footer>

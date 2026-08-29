@@ -1,23 +1,41 @@
-import {
-  Fuel,
-  FlaskConical,
-  Snowflake,
-  Anchor,
-  Factory,
-  GitBranch,
-  Zap,
-  Building2,
-} from "lucide-react";
+import { Fuel, FlaskConical, Anchor, Factory, Zap, HardHat, GitBranch } from "lucide-react";
 
 const INDUSTRIES = [
-  { icon: Fuel, name: "Oil & Gas" },
-  { icon: FlaskConical, name: "Petrochemical" },
-  { icon: Snowflake, name: "LNG" },
-  { icon: Anchor, name: "Offshore Platforms" },
-  { icon: Factory, name: "Refineries" },
-  { icon: GitBranch, name: "Pipelines" },
-  { icon: Zap, name: "Power Plants" },
-  { icon: Building2, name: "Construction & Infrastructure" },
+  {
+    icon: Fuel,
+    name: "Oil & Gas",
+    desc: "Inspection and quality support for upstream, midstream and downstream projects.",
+  },
+  {
+    icon: FlaskConical,
+    name: "Petrochemical",
+    desc: "Quality surveillance and inspection for process facilities and associated infrastructure.",
+  },
+  {
+    icon: Anchor,
+    name: "Offshore",
+    desc: "Inspection support for offshore platforms, structures, piping and mechanical systems.",
+  },
+  {
+    icon: Factory,
+    name: "Onshore",
+    desc: "Inspection and QA/QC services for industrial and energy facilities.",
+  },
+  {
+    icon: Zap,
+    name: "LNG & Energy",
+    desc: "Quality services supporting major energy and infrastructure projects.",
+  },
+  {
+    icon: HardHat,
+    name: "Fabrication & Construction",
+    desc: "Inspection support throughout fabrication, construction and installation activities.",
+  },
+  {
+    icon: GitBranch,
+    name: "Pipeline",
+    desc: "Quality and inspection services for pipeline fabrication, construction and coating.",
+  },
 ];
 
 export default function Industries() {
@@ -30,8 +48,8 @@ export default function Industries() {
           </h2>
         </div>
 
-        <div className="mt-14 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
-          {INDUSTRIES.map(({ icon: Icon, name }) => (
+        <div className="mt-14 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+          {INDUSTRIES.map(({ icon: Icon, name, desc }) => (
             <div
               key={name}
               className="flex flex-col items-center gap-3 rounded-xl border border-steel-700/60 bg-navy-800/60 p-6 text-center transition-colors hover:border-steel-400"
@@ -42,6 +60,9 @@ export default function Industries() {
               <span className="text-sm font-semibold text-steel-100">
                 {name}
               </span>
+              <p className="text-xs leading-relaxed text-steel-100/70">
+                {desc}
+              </p>
             </div>
           ))}
         </div>

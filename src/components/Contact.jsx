@@ -38,13 +38,27 @@ export default function Contact() {
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-2xl text-center">
           <h2 className="font-heading text-3xl font-bold text-white sm:text-4xl">
-            Contact Us
+            Request Inspection / Get a Quote
           </h2>
+          <p className="mt-3 text-sm font-semibold uppercase tracking-wide text-steel-300">
+            Need Reliable Inspection Support?
+          </p>
+          <p className="mt-6 text-base text-steel-100/90 sm:text-lg">
+            Tell us about your project, inspection requirement or quality
+            challenge.
+          </p>
+          <p className="mt-3 text-base text-steel-100/90 sm:text-lg">
+            Our team can review your requirements and provide an appropriate
+            inspection or quality service solution.
+          </p>
         </div>
 
         <div className="mt-14 grid grid-cols-1 gap-12 lg:grid-cols-2">
           <div className="space-y-6">
             <p className="text-lg font-semibold text-white">
+              Contact RIQS
+            </p>
+            <p className="text-sm text-steel-100/80">
               RIQS – Ritvish Inspection &amp; Quality Services
             </p>
             <ul className="space-y-4">
