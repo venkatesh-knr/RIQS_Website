@@ -1,0 +1,37 @@
+@import url("https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700;800&family=Inter:wght@400;500;600;700&display=swap");
+@import "tailwindcss";
+
+@theme {
+  --font-heading: "Barlow Condensed", "Inter", system-ui, sans-serif;
+  --font-body: "Inter", system-ui, sans-serif;
+
+  /* Navy - primary dark base */
+  --color-navy-950: #060f1e;
+  --color-navy-900: #0b1f3a;
+  --color-navy-800: #122a4d;
+  --color-navy-700: #1a3a63;
+  --color-navy-600: #234a78;
+
+  /* Steel blue - primary accent */
+  --color-steel-700: #234a70;
+  --color-steel-600: #2e5a8c;
+  --color-steel-500: #3b6ea5;
+  --color-steel-400: #5b8cc4;
+  --color-steel-300: #8fb3d9;
+  --color-steel-100: #e3edf6;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--font-body);
+}
+
+h1,
+h2,
+h3,
+h4 {
+  font-family: var(--font-heading);
+}
