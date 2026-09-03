@@ -32,7 +32,10 @@ export default function WhyUs() {
     <section id="why-us" className="bg-white py-20 sm:py-28">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-2xl text-center">
-          <h2 className="font-heading text-3xl font-bold text-navy-900 sm:text-4xl">
+          <p className="text-xs font-bold uppercase tracking-[0.2em] text-amber-600">
+            The RIQS Difference
+          </p>
+          <h2 className="mt-2 font-heading text-3xl font-bold text-navy-900 sm:text-4xl">
             Why Choose RIQS?
           </h2>
           <p className="mt-3 text-sm font-semibold uppercase tracking-wide text-steel-500">
@@ -44,12 +47,11 @@ export default function WhyUs() {
           {REASONS.map(({ title, desc }) => (
             <div
               key={title}
-              className="flex items-start gap-3 rounded-lg border border-steel-100 bg-steel-100/30 p-5"
+              className="flex items-start gap-3 rounded-lg border border-steel-100 bg-steel-100/30 p-5 shadow-sm transition-all duration-200 hover:-translate-y-1 hover:border-amber-400/60 hover:shadow-lg"
             >
-              <CheckCircle2
-                className="mt-0.5 shrink-0 text-steel-500"
-                size={24}
-              />
+              <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-navy-900 text-steel-300">
+                <CheckCircle2 size={20} />
+              </span>
               <div>
                 <span className="text-base font-semibold text-navy-900">
                   {title}

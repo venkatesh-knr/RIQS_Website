@@ -16,7 +16,10 @@ export default function Certifications() {
   return (
     <section id="certifications" className="bg-steel-100/40 py-20 sm:py-28">
       <div className="mx-auto max-w-7xl px-4 text-center sm:px-6 lg:px-8">
-        <h2 className="font-heading text-3xl font-bold text-navy-900 sm:text-4xl">
+        <p className="text-xs font-bold uppercase tracking-[0.2em] text-amber-600">
+          Standards &amp; Compliance
+        </p>
+        <h2 className="mt-2 font-heading text-3xl font-bold text-navy-900 sm:text-4xl">
           Codes &amp; Standards
         </h2>
         <p className="mx-auto mt-4 max-w-3xl text-base text-gray-600">
@@ -29,7 +32,7 @@ export default function Certifications() {
           {CODES_AND_STANDARDS.map((cert) => (
             <div
               key={cert}
-              className="flex h-20 min-w-[8rem] items-center justify-center rounded-lg border-2 border-navy-900/10 bg-white px-4 text-center text-lg font-bold tracking-wide text-navy-900 shadow-sm transition-colors hover:border-steel-400"
+              className="flex h-20 min-w-[8rem] items-center justify-center rounded-lg border-2 border-navy-900/10 bg-white px-4 text-center text-lg font-bold tracking-wide text-navy-900 shadow-sm transition-all duration-200 hover:-translate-y-1 hover:border-amber-400/60 hover:shadow-lg"
             >
               {cert}
             </div>

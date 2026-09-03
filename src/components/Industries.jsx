@@ -43,7 +43,10 @@ export default function Industries() {
     <section id="industries" className="bg-navy-900 py-20 sm:py-28">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-2xl text-center">
-          <h2 className="font-heading text-3xl font-bold text-white sm:text-4xl">
+          <p className="text-xs font-bold uppercase tracking-[0.2em] text-amber-400">
+            Who We Serve
+          </p>
+          <h2 className="mt-2 font-heading text-3xl font-bold text-white sm:text-4xl">
             Industries We Serve
           </h2>
         </div>
@@ -52,9 +55,9 @@ export default function Industries() {
           {INDUSTRIES.map(({ icon: Icon, name, desc }) => (
             <div
               key={name}
-              className="flex flex-col items-center gap-3 rounded-xl border border-steel-700/60 bg-navy-800/60 p-6 text-center transition-colors hover:border-steel-400"
+              className="flex flex-col items-center gap-3 rounded-xl border border-steel-700/60 bg-navy-800/60 p-6 text-center shadow-sm transition-all duration-200 hover:-translate-y-1 hover:border-amber-400/60 hover:shadow-lg"
             >
-              <span className="flex h-12 w-12 items-center justify-center rounded-full bg-steel-600/30 text-steel-300">
+              <span className="flex h-12 w-12 items-center justify-center rounded-lg bg-navy-950 text-steel-300">
                 <Icon size={24} />
               </span>
               <span className="text-sm font-semibold text-steel-100">

@@ -159,14 +159,14 @@ function ServiceCard({ index, icon: Icon, name, blurb, checklist }) {
   const [open, setOpen] = useState(false);
 
   return (
-    <div className="rounded-xl border border-transparent bg-white p-6 shadow-sm transition-all duration-200 hover:border-steel-400 hover:shadow-lg">
+    <div className="rounded-xl border border-transparent bg-white p-6 shadow-sm transition-all duration-200 hover:-translate-y-1 hover:border-amber-400/60 hover:shadow-lg">
       <div className="flex items-start justify-between gap-4">
         <div className="flex items-start gap-4">
           <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-lg bg-navy-900 text-steel-300">
             <Icon size={24} />
           </span>
           <div>
-            <span className="text-xs font-bold tracking-wide text-steel-400">
+            <span className="text-xs font-bold tracking-wide text-amber-600">
               {String(index + 1).padStart(2, "0")}
             </span>
             <h3 className="text-lg font-semibold text-navy-900">{name}</h3>
@@ -211,7 +211,10 @@ export default function Services() {
     <section id="services" className="bg-steel-100/40 py-20 sm:py-28">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-2xl text-center">
-          <h2 className="font-heading text-3xl font-bold text-navy-900 sm:text-4xl">
+          <p className="text-xs font-bold uppercase tracking-[0.2em] text-amber-600">
+            What We Do
+          </p>
+          <h2 className="mt-2 font-heading text-3xl font-bold text-navy-900 sm:text-4xl">
             Our Core Services
           </h2>
         </div>

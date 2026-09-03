@@ -37,7 +37,10 @@ export default function Contact() {
     <section id="contact" className="bg-navy-900 py-20 sm:py-28">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-2xl text-center">
-          <h2 className="font-heading text-3xl font-bold text-white sm:text-4xl">
+          <p className="text-xs font-bold uppercase tracking-[0.2em] text-amber-400">
+            Get In Touch
+          </p>
+          <h2 className="mt-2 font-heading text-3xl font-bold text-white sm:text-4xl">
             Request Inspection / Get a Quote
           </h2>
           <p className="mt-3 text-sm font-semibold uppercase tracking-wide text-steel-300">
