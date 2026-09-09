@@ -1,4 +1,5 @@
 import { ClipboardList, Search, CheckCircle2, FileText, TrendingUp } from "lucide-react";
+import Reveal from "./Reveal";
 
 const STEPS = [
   {
@@ -32,7 +33,7 @@ export default function OurApproach() {
   return (
     <section id="approach" className="bg-white py-20 sm:py-28">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div className="mx-auto max-w-2xl text-center">
+        <Reveal className="mx-auto max-w-2xl text-center">
           <p className="text-xs font-bold uppercase tracking-[0.2em] text-amber-700">
             How We Work
           </p>
@@ -42,11 +43,15 @@ export default function OurApproach() {
           <p className="mt-3 text-sm font-semibold uppercase tracking-[0.2em] text-steel-500">
             Plan &rarr; Inspect &rarr; Verify &rarr; Report &rarr; Improve
           </p>
-        </div>
+        </Reveal>
 
         <div className="mt-16 grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-5 lg:gap-4">
           {STEPS.map(({ icon: Icon, name, desc }, index) => (
-            <div key={name} className="relative flex flex-col items-center text-center">
+            <Reveal
+              key={name}
+              delay={index * 90}
+              className="relative flex flex-col items-center text-center"
+            >
               {index < STEPS.length - 1 && (
                 <div
                   aria-hidden="true"
@@ -65,7 +70,7 @@ export default function OurApproach() {
               <p className="mt-2 text-sm leading-relaxed text-gray-600">
                 {desc}
               </p>
-            </div>
+            </Reveal>
           ))}
         </div>
       </div>

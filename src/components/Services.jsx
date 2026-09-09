@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useId, useState } from "react";
+import Reveal from "./Reveal";
 import {
   Flame,
   ClipboardCheck,
@@ -157,10 +158,15 @@ const SERVICES = [
 
 function ServiceCard({ index, icon: Icon, name, blurb, checklist }) {
   const [open, setOpen] = useState(false);
+  const panelId = useId();
 
+  // The whole card is the toggle: the button carries a stretched ::after
+  // overlay covering the card, so the click target is the full card while
+  // the accessible name stays just the service title. The button sits inside
+  // the h3 per the WAI-ARIA accordion pattern.
   return (
-    <div className="rounded-xl border border-transparent bg-white p-6 shadow-sm transition-all duration-200 hover:-translate-y-1 hover:border-amber-400/60 hover:shadow-lg">
-      <div className="flex items-start justify-between gap-4">
+    <div className="relative flex h-full flex-col rounded-xl border border-transparent bg-white shadow-sm transition-all duration-200 hover:-translate-y-1 hover:border-amber-400/60 hover:shadow-lg">
+      <div className="p-6">
         <div className="flex items-start gap-4">
           <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-lg bg-navy-900 text-steel-300">
             <Icon size={24} />
@@ -169,28 +175,40 @@ function ServiceCard({ index, icon: Icon, name, blurb, checklist }) {
             <span className="text-xs font-bold tracking-wide text-amber-700">
               {String(index + 1).padStart(2, "0")}
             </span>
-            <h3 className="text-lg font-semibold text-navy-900">{name}</h3>
+            <h3 className="text-lg font-semibold text-navy-900">
+              <button
+                type="button"
+                onClick={() => setOpen((v) => !v)}
+                aria-expanded={open}
+                aria-controls={panelId}
+                className="text-left after:absolute after:inset-0 after:rounded-xl after:content-['']"
+              >
+                {name}
+              </button>
+            </h3>
           </div>
         </div>
+
+        <p className="mt-4 text-sm leading-relaxed text-gray-600">{blurb}</p>
+
+        {/* Decorative: the button above already announces expanded state. */}
+        <span
+          aria-hidden="true"
+          className="mt-4 flex items-center gap-1.5 text-sm font-semibold text-steel-500"
+        >
+          {open ? "Hide details" : "View details"}
+          <ChevronDown
+            size={16}
+            className={`transition-transform duration-200 ${open ? "rotate-180" : ""}`}
+          />
+        </span>
       </div>
 
-      <p className="mt-4 text-sm leading-relaxed text-gray-600">{blurb}</p>
-
-      <button
-        type="button"
-        onClick={() => setOpen((v) => !v)}
-        aria-expanded={open}
-        className="mt-4 flex items-center gap-1.5 text-sm font-semibold text-steel-500 transition-colors hover:text-steel-600"
-      >
-        {open ? "Hide details" : "View details"}
-        <ChevronDown
-          size={16}
-          className={`transition-transform duration-200 ${open ? "rotate-180" : ""}`}
-        />
-      </button>
-
       {open && (
-        <ul className="mt-4 space-y-2 border-t border-steel-100 pt-4">
+        <ul
+          id={panelId}
+          className="mx-6 mb-6 space-y-2 border-t border-steel-100 pt-4"
+        >
           {checklist.map((item) => (
             <li
               key={item}
@@ -210,18 +228,20 @@ export default function Services() {
   return (
     <section id="services" className="bg-steel-100/40 py-20 sm:py-28">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div className="mx-auto max-w-2xl text-center">
+        <Reveal className="mx-auto max-w-2xl text-center">
           <p className="text-xs font-bold uppercase tracking-[0.2em] text-amber-700">
             What We Do
           </p>
           <h2 className="mt-2 font-heading text-3xl font-bold text-navy-900 sm:text-4xl">
             Our Core Services
           </h2>
-        </div>
+        </Reveal>
 
-        <div className="mt-14 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="mt-14 grid grid-cols-1 items-start gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {SERVICES.map((service, index) => (
-            <ServiceCard key={service.name} index={index} {...service} />
+            <Reveal key={service.name} delay={(index % 3) * 90}>
+              <ServiceCard index={index} {...service} />
+            </Reveal>
           ))}
         </div>
       </div>

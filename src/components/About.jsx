@@ -1,4 +1,5 @@
 import { ShieldCheck, Award, Users } from "lucide-react";
+import Reveal from "./Reveal";
 
 const STATS = [
   { icon: ShieldCheck, label: "Independent QA/QC" },
@@ -11,7 +12,7 @@ export default function About() {
     <section id="about" className="bg-white py-20 sm:py-28">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 gap-12 lg:grid-cols-5 lg:gap-16">
-          <div className="lg:col-span-3">
+          <Reveal className="lg:col-span-3">
             <p className="text-xs font-bold uppercase tracking-[0.2em] text-amber-700">
               Who We Are
             </p>
@@ -62,13 +63,13 @@ export default function About() {
                 integrity and confidence throughout the project.&rdquo;
               </p>
             </div>
-          </div>
+          </Reveal>
 
           {/* Supporting visual block — a stylized icon/stat panel standing in
               for a photo of inspectors or a facility. Drop a real photo in
               as `src/assets/about-photo.jpg` and swap this panel's pattern
               background for a cover-and-centered background-image if preferred. */}
-          <div className="lg:col-span-2">
+          <Reveal delay={120} className="lg:col-span-2">
             <div className="relative h-full overflow-hidden rounded-2xl bg-navy-900 p-8">
               <div
                 aria-hidden="true"
@@ -92,7 +93,7 @@ export default function About() {
                 ))}
               </div>
             </div>
-          </div>
+          </Reveal>
         </div>
       </div>
     </section>

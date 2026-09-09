@@ -8,9 +8,7 @@ import OurApproach from "./components/OurApproach";
 import Certifications from "./components/Certifications";
 import WhyUs from "./components/WhyUs";
 import QualityIntegrity from "./components/QualityIntegrity";
-import CertificationCompetence from "./components/CertificationCompetence";
-import DocumentationReporting from "./components/DocumentationReporting";
-import ClientsPartners from "./components/ClientsPartners";
+import WorkingWithRiqs from "./components/WorkingWithRiqs";
 import Contact from "./components/Contact";
 import Footer from "./components/Footer";
 import BackToTop from "./components/BackToTop";
@@ -29,9 +27,7 @@ function App() {
       <Certifications />
       <WhyUs />
       <QualityIntegrity />
-      <CertificationCompetence />
-      <DocumentationReporting />
-      <ClientsPartners />
+      <WorkingWithRiqs />
       <Contact />
       <Footer />
       <BackToTop />

@@ -1,4 +1,5 @@
 import { ShieldCheck, Award, HardHat, Star, Users } from "lucide-react";
+import Reveal from "./Reveal";
 
 const VALUES = [
   {
@@ -87,10 +88,12 @@ export default function QualityIntegrity() {
           Our Core Values
         </h3>
         <div className="mt-8 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-5">
-          {VALUES.map(({ icon: Icon, name, desc }) => (
-            <div
+          {VALUES.map(({ icon: Icon, name, desc }, i) => (
+            // Static card: nothing here is clickable, so no hover lift.
+            <Reveal
               key={name}
-              className="flex flex-col items-center gap-3 rounded-xl border border-steel-700/60 bg-navy-800/60 p-6 text-center shadow-sm transition-all duration-200 hover:-translate-y-1 hover:border-amber-400/60 hover:shadow-lg"
+              delay={(i % 5) * 80}
+              className="flex flex-col items-center gap-3 rounded-xl border border-steel-700/60 bg-navy-800/60 p-6 text-center shadow-sm"
             >
               <span className="flex h-12 w-12 items-center justify-center rounded-lg bg-navy-950 text-steel-300">
                 <Icon size={24} />
@@ -101,7 +104,7 @@ export default function QualityIntegrity() {
               <p className="text-xs leading-relaxed text-steel-100/70">
                 {desc}
               </p>
-            </div>
+            </Reveal>
           ))}
         </div>
       </div>

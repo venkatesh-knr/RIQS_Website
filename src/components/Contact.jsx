@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Mail, Globe, Phone, MapPin } from "lucide-react";
+import Reveal from "./Reveal";
 
 const CONTACT_ITEMS = [
   { icon: Mail, label: "info@riqsinspection.com", href: "mailto:info@riqsinspection.com" },
@@ -9,34 +10,75 @@ const CONTACT_ITEMS = [
   { icon: MapPin, label: "Doha, Qatar", href: undefined },
 ];
 
+// Where the form posts. Set VITE_FORM_ENDPOINT in a .env file to switch the
+// form from the mailto: fallback to a real submission endpoint — see
+// README.md for the two-minute setup. Any service that accepts a JSON POST
+// works (Formspree, Web3Forms, Getform, Basin).
+const FORM_ENDPOINT = import.meta.env.VITE_FORM_ENDPOINT;
+
+const FIELDS = [
+  { name: "name", label: "Name", type: "text", required: true, autoComplete: "name" },
+  { name: "email", label: "Email", type: "email", required: true, autoComplete: "email" },
+  { name: "phone", label: "Phone", type: "tel", required: false, autoComplete: "tel" },
+];
+
 export default function Contact() {
   const [form, setForm] = useState({ name: "", email: "", phone: "", message: "" });
-  const [submitted, setSubmitted] = useState(false);
+  // idle | sending | sent | error
+  const [status, setStatus] = useState("idle");
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setForm((prev) => ({ ...prev, [name]: value }));
   };
 
-  // No real backend is wired up yet: submitting opens the user's email
-  // client via a mailto: link pre-filled with the form data. To wire this up
-  // for real, replace this handler with a fetch() POST to your backend, or
-  // swap in a service like Formspree (https://formspree.io) or EmailJS
-  // (https://www.emailjs.com/).
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    const subject = encodeURIComponent(`Quote Request from ${form.name || "Website Visitor"}`);
+  // Falls back to opening the visitor's mail client when no endpoint is
+  // configured. That fallback silently fails for anyone on webmail, which is
+  // why configuring FORM_ENDPOINT matters for real lead capture.
+  const submitViaMailto = () => {
+    const subject = encodeURIComponent(
+      `Quote Request from ${form.name || "Website Visitor"}`,
+    );
     const body = encodeURIComponent(
-      `Name: ${form.name}\nEmail: ${form.email}\nPhone: ${form.phone}\n\n${form.message}`
+      `Name: ${form.name}\nEmail: ${form.email}\nPhone: ${form.phone}\n\n${form.message}`,
     );
     window.location.href = `mailto:info@riqsinspection.com?subject=${subject}&body=${body}`;
-    setSubmitted(true);
+    setStatus("sent");
   };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    if (!FORM_ENDPOINT) {
+      submitViaMailto();
+      return;
+    }
+
+    setStatus("sending");
+    try {
+      const response = await fetch(FORM_ENDPOINT, {
+        method: "POST",
+        headers: { "Content-Type": "application/json", Accept: "application/json" },
+        body: JSON.stringify({
+          ...form,
+          _subject: `Quote request from ${form.name || "website visitor"}`,
+        }),
+      });
+      if (!response.ok) throw new Error(`Request failed: ${response.status}`);
+      setStatus("sent");
+      setForm({ name: "", email: "", phone: "", message: "" });
+    } catch {
+      setStatus("error");
+    }
+  };
+
+  const inputClass =
+    "w-full rounded-md border border-gray-300 px-4 py-2.5 text-sm text-navy-900 focus:border-steel-500 focus:outline-none focus:ring-1 focus:ring-steel-500";
 
   return (
     <section id="contact" className="bg-navy-900 py-20 sm:py-28">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div className="mx-auto max-w-2xl text-center">
+        <Reveal className="mx-auto max-w-2xl text-center">
           <p className="text-xs font-bold uppercase tracking-[0.2em] text-amber-400">
             Get In Touch
           </p>
@@ -54,20 +96,18 @@ export default function Contact() {
             Our team can review your requirements and provide an appropriate
             inspection or quality service solution.
           </p>
-        </div>
+        </Reveal>
 
         <div className="mt-14 grid grid-cols-1 gap-12 lg:grid-cols-2">
-          <div className="space-y-6">
-            <p className="text-lg font-semibold text-white">
-              Contact RIQS
-            </p>
+          <Reveal className="space-y-6">
+            <p className="text-lg font-semibold text-white">Contact RIQS</p>
             <p className="text-sm text-steel-100/80">
               RIQS – Ritvish Inspection &amp; Quality Services
             </p>
             <ul className="space-y-4">
               {CONTACT_ITEMS.map(({ icon: Icon, label, href }) => (
                 <li key={label} className="flex items-center gap-3 text-steel-100">
-                  <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-steel-600/30 text-steel-300">
+                  <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-steel-600/30 text-steel-300">
                     <Icon size={20} />
                   </span>
                   {href ? (
@@ -80,87 +120,105 @@ export default function Contact() {
                 </li>
               ))}
             </ul>
-          </div>
+          </Reveal>
 
-          <form
-            onSubmit={handleSubmit}
-            className="rounded-xl bg-white p-6 shadow-xl sm:p-8"
-          >
-            {submitted ? (
-              <div className="flex h-full flex-col items-center justify-center gap-2 py-12 text-center">
-                <p className="text-lg font-semibold text-navy-900">
-                  Thank you — your email client should now be open.
-                </p>
-                <p className="text-sm text-gray-600">
-                  If it didn't open, email us directly at info@riqsinspection.com.
-                </p>
-              </div>
-            ) : (
-              <div className="space-y-4">
-                <div>
-                  <label htmlFor="name" className="mb-1 block text-sm font-medium text-navy-900">
-                    Name
-                  </label>
-                  <input
-                    id="name"
-                    name="name"
-                    type="text"
-                    required
-                    value={form.name}
-                    onChange={handleChange}
-                    className="w-full rounded-md border border-gray-300 px-4 py-2.5 text-sm text-navy-900 focus:border-steel-500 focus:outline-none focus:ring-1 focus:ring-steel-500"
-                  />
-                </div>
-                <div>
-                  <label htmlFor="email" className="mb-1 block text-sm font-medium text-navy-900">
-                    Email
-                  </label>
-                  <input
-                    id="email"
-                    name="email"
-                    type="email"
-                    required
-                    value={form.email}
-                    onChange={handleChange}
-                    className="w-full rounded-md border border-gray-300 px-4 py-2.5 text-sm text-navy-900 focus:border-steel-500 focus:outline-none focus:ring-1 focus:ring-steel-500"
-                  />
-                </div>
-                <div>
-                  <label htmlFor="phone" className="mb-1 block text-sm font-medium text-navy-900">
-                    Phone
-                  </label>
-                  <input
-                    id="phone"
-                    name="phone"
-                    type="tel"
-                    value={form.phone}
-                    onChange={handleChange}
-                    className="w-full rounded-md border border-gray-300 px-4 py-2.5 text-sm text-navy-900 focus:border-steel-500 focus:outline-none focus:ring-1 focus:ring-steel-500"
-                  />
-                </div>
-                <div>
-                  <label htmlFor="message" className="mb-1 block text-sm font-medium text-navy-900">
-                    Message
-                  </label>
-                  <textarea
-                    id="message"
-                    name="message"
-                    rows={4}
-                    required
-                    value={form.message}
-                    onChange={handleChange}
-                    className="w-full rounded-md border border-gray-300 px-4 py-2.5 text-sm text-navy-900 focus:border-steel-500 focus:outline-none focus:ring-1 focus:ring-steel-500"
-                  />
-                </div>
-                <button
-                  type="submit"
-                  className="w-full rounded-md bg-steel-500 px-6 py-3 text-sm font-semibold text-white transition-colors hover:bg-steel-400"
+          <Reveal delay={120}>
+            <form
+              onSubmit={handleSubmit}
+              className="rounded-xl bg-white p-6 shadow-xl sm:p-8"
+            >
+              {status === "sent" ? (
+                <div
+                  className="flex h-full flex-col items-center justify-center gap-2 py-12 text-center"
+                  role="status"
                 >
-                  Submit
-                </button>
-              </div>
-            )}
-          </form>
+                  <p className="text-lg font-semibold text-navy-900">
+                    {FORM_ENDPOINT
+                      ? "Thank you — your message has been sent."
+                      : "Thank you — your email client should now be open."}
+                  </p>
+                  <p className="text-sm text-gray-600">
+                    {FORM_ENDPOINT
+                      ? "We'll get back to you as soon as possible."
+                      : "If it didn't open, email us directly at info@riqsinspection.com."}
+                  </p>
+                </div>
+              ) : (
+                <div className="space-y-4">
+                  {FIELDS.map(({ name, label, type, required, autoComplete }) => (
+                    <div key={name}>
+                      <label
+                        htmlFor={name}
+                        className="mb-1 block text-sm font-medium text-navy-900"
+                      >
+                        {label}
+                        {!required && (
+                          <span className="ml-1 font-normal text-gray-500">
+                            (optional)
+                          </span>
+                        )}
+                      </label>
+                      <input
+                        id={name}
+                        name={name}
+                        type={type}
+                        required={required}
+                        autoComplete={autoComplete}
+                        value={form[name]}
+                        onChange={handleChange}
+                        className={inputClass}
+                      />
+                    </div>
+                  ))}
+
+                  <div>
+                    <label
+                      htmlFor="message"
+                      className="mb-1 block text-sm font-medium text-navy-900"
+                    >
+                      Message
+                    </label>
+                    <textarea
+                      id="message"
+                      name="message"
+                      rows={4}
+                      required
+                      value={form.message}
+                      onChange={handleChange}
+                      className={inputClass}
+                    />
+                  </div>
+
+                  {/* aria-live so screen readers announce a failed send. */}
+                  <p aria-live="polite" className="sr-only">
+                    {status === "sending" ? "Sending your message" : ""}
+                  </p>
+
+                  {status === "error" && (
+                    <p className="rounded-md bg-red-50 px-4 py-3 text-sm text-red-700">
+                      Something went wrong sending your message. Please email
+                      us directly at{" "}
+                      <a
+                        href="mailto:info@riqsinspection.com"
+                        className="font-semibold underline"
+                      >
+                        info@riqsinspection.com
+                      </a>
+                      .
+                    </p>
+                  )}
+
+                  <button
+                    type="submit"
+                    disabled={status === "sending"}
+                    className="w-full rounded-md bg-steel-500 px-6 py-3 text-sm font-semibold text-white transition-colors hover:bg-steel-400 disabled:cursor-not-allowed disabled:opacity-60"
+                  >
+                    {status === "sending" ? "Sending…" : "Submit"}
+                  </button>
+                </div>
+              )}
+            </form>
+          </Reveal>
         </div>
       </div>
     </section>

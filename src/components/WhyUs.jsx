@@ -1,4 +1,5 @@
 import { CheckCircle2 } from "lucide-react";
+import Reveal from "./Reveal";
 
 const REASONS = [
   {
@@ -31,7 +32,7 @@ export default function WhyUs() {
   return (
     <section id="why-us" className="bg-white py-20 sm:py-28">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div className="mx-auto max-w-2xl text-center">
+        <Reveal className="mx-auto max-w-2xl text-center">
           <p className="text-xs font-bold uppercase tracking-[0.2em] text-amber-700">
             The RIQS Difference
           </p>
@@ -41,13 +42,15 @@ export default function WhyUs() {
           <p className="mt-3 text-sm font-semibold uppercase tracking-wide text-steel-500">
             Experience That Adds Value
           </p>
-        </div>
+        </Reveal>
 
         <div className="mx-auto mt-14 grid max-w-4xl grid-cols-1 gap-5 sm:grid-cols-2">
-          {REASONS.map(({ title, desc }) => (
-            <div
+          {REASONS.map(({ title, desc }, i) => (
+            // Static card: nothing here is clickable, so no hover lift.
+            <Reveal
               key={title}
-              className="flex items-start gap-3 rounded-lg border border-steel-100 bg-steel-100/30 p-5 shadow-sm transition-all duration-200 hover:-translate-y-1 hover:border-amber-400/60 hover:shadow-lg"
+              delay={(i % 2) * 80}
+              className="flex items-start gap-3 rounded-lg border border-steel-100 bg-steel-100/30 p-5 shadow-sm"
             >
               <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-navy-900 text-steel-300">
                 <CheckCircle2 size={20} />
@@ -60,7 +63,7 @@ export default function WhyUs() {
                   {desc}
                 </p>
               </div>
-            </div>
+            </Reveal>
           ))}
         </div>
       </div>

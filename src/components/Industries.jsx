@@ -1,4 +1,5 @@
 import { Fuel, FlaskConical, Anchor, Factory, Zap, HardHat, GitBranch } from "lucide-react";
+import Reveal from "./Reveal";
 
 const INDUSTRIES = [
   {
@@ -42,20 +43,22 @@ export default function Industries() {
   return (
     <section id="industries" className="bg-navy-900 py-20 sm:py-28">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div className="mx-auto max-w-2xl text-center">
+        <Reveal className="mx-auto max-w-2xl text-center">
           <p className="text-xs font-bold uppercase tracking-[0.2em] text-amber-400">
             Who We Serve
           </p>
           <h2 className="mt-2 font-heading text-3xl font-bold text-white sm:text-4xl">
             Industries We Serve
           </h2>
-        </div>
+        </Reveal>
 
         <div className="mt-14 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-          {INDUSTRIES.map(({ icon: Icon, name, desc }) => (
-            <div
+          {INDUSTRIES.map(({ icon: Icon, name, desc }, i) => (
+            // Static card: no hover lift, because nothing here is clickable.
+            <Reveal
               key={name}
-              className="flex flex-col items-center gap-3 rounded-xl border border-steel-700/60 bg-navy-800/60 p-6 text-center shadow-sm transition-all duration-200 hover:-translate-y-1 hover:border-amber-400/60 hover:shadow-lg"
+              delay={(i % 4) * 80}
+              className="flex flex-col items-center gap-3 rounded-xl border border-steel-700/60 bg-navy-800/60 p-6 text-center shadow-sm"
             >
               <span className="flex h-12 w-12 items-center justify-center rounded-lg bg-navy-950 text-steel-300">
                 <Icon size={24} />
@@ -66,7 +69,7 @@ export default function Industries() {
               <p className="text-xs leading-relaxed text-steel-100/70">
                 {desc}
               </p>
-            </div>
+            </Reveal>
           ))}
         </div>
       </div>
