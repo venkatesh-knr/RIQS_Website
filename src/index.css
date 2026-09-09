@@ -35,3 +35,29 @@ h3,
 h4 {
   font-family: var(--font-heading);
 }
+
+/* Visible keyboard focus ring. Tailwind's preflight removes the browser
+   default, so without this keyboard users get no focus indicator at all.
+   Amber-600 clears the 3:1 non-text contrast bar against both the white
+   sections (3.19:1) and the navy ones (4.79:1), so one ring works sitewide. */
+:focus-visible {
+  outline: 3px solid #d97706;
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+/* Respect users who ask for less motion (vestibular disorders). */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

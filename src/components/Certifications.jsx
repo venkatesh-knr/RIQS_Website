@@ -16,7 +16,7 @@ export default function Certifications() {
   return (
     <section id="certifications" className="bg-steel-100/40 py-20 sm:py-28">
       <div className="mx-auto max-w-7xl px-4 text-center sm:px-6 lg:px-8">
-        <p className="text-xs font-bold uppercase tracking-[0.2em] text-amber-600">
+        <p className="text-xs font-bold uppercase tracking-[0.2em] text-amber-700">
           Standards &amp; Compliance
         </p>
         <h2 className="mt-2 font-heading text-3xl font-bold text-navy-900 sm:text-4xl">

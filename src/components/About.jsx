@@ -12,7 +12,7 @@ export default function About() {
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 gap-12 lg:grid-cols-5 lg:gap-16">
           <div className="lg:col-span-3">
-            <p className="text-xs font-bold uppercase tracking-[0.2em] text-amber-600">
+            <p className="text-xs font-bold uppercase tracking-[0.2em] text-amber-700">
               Who We Are
             </p>
             <h2 className="mt-2 font-heading text-3xl font-bold text-navy-900 sm:text-4xl">
@@ -27,6 +27,12 @@ export default function About() {
                 RIQS is an independent inspection and quality services
                 company focused on delivering reliable, technically sound,
                 and client-oriented inspection solutions.
+              </p>
+              <p>
+                We support clients, EPC contractors, fabrication yards, and
+                project teams in maintaining the highest standards of
+                quality, safety, integrity, and regulatory compliance
+                throughout the project lifecycle.
               </p>
               <p>
                 Our objective is to help clients identify quality risks at an

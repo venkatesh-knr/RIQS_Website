@@ -14,6 +14,7 @@ import ClientsPartners from "./components/ClientsPartners";
 import Contact from "./components/Contact";
 import Footer from "./components/Footer";
 import BackToTop from "./components/BackToTop";
+import MobileCta from "./components/MobileCta";
 
 function App() {
   return (
@@ -34,6 +35,7 @@ function App() {
       <Contact />
       <Footer />
       <BackToTop />
+      <MobileCta />
     </>
   );
 }

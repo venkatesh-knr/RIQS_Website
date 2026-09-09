@@ -1,4 +1,4 @@
-import logo from "../assets/logo.png";
+import logo from "../assets/logo.webp";
 
 const QUICK_LINKS = [
   { label: "Home", href: "#top" },
@@ -12,13 +12,15 @@ const QUICK_LINKS = [
 export default function Footer() {
   const year = new Date().getFullYear();
 
+  // Extra bottom padding on phones so the sticky quote bar doesn't cover the
+  // copyright line.
   return (
-    <footer className="border-t-2 border-amber-500 bg-navy-950 py-12 text-steel-100">
+    <footer className="border-t-2 border-amber-500 bg-navy-950 pb-28 pt-12 text-steel-100 lg:pb-12">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 gap-10 sm:grid-cols-3">
           <div>
             {/* Light backing chip keeps the dark-navy wordmark legible
-                against the dark footer background. Swap src/assets/logo.png
+                against the dark footer background. Swap src/assets/logo.webp
                 for an updated logo file later if needed. */}
             <span className="inline-flex items-center rounded-md bg-white/95 px-3 py-2 shadow-sm">
               <img src={logo} alt="RIQS logo" className="h-9 w-auto" />

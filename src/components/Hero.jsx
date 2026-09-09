@@ -8,7 +8,9 @@ export default function Hero() {
       // background layers below for a single
       // background-image (cover, centered) layer plus the overlay div that
       // already follows it.
-      className="relative flex min-h-screen items-center overflow-hidden bg-gradient-to-br from-navy-950 via-navy-900 to-navy-800 pt-24"
+      // min-h-svh (small viewport height) rather than min-h-screen so mobile
+      // browser chrome doesn't push the CTAs below the fold.
+      className="relative flex min-h-svh items-center overflow-hidden bg-gradient-to-br from-navy-950 via-navy-900 to-navy-800 pt-20"
     >
       {/* Layer 1: industrial-toned base gradient + blueprint grid, standing in for a photo */}
       <div
@@ -43,27 +45,22 @@ export default function Hero() {
         className="pointer-events-none absolute -bottom-32 -left-32 h-96 w-96 rounded-full bg-steel-500/10 blur-3xl"
       />
 
-      <div className="relative mx-auto max-w-5xl px-4 py-20 text-center sm:px-6 lg:px-8">
-        <p className="mb-6 text-sm font-semibold uppercase tracking-[0.3em] text-amber-400">
+      <div className="relative mx-auto max-w-5xl px-4 py-12 text-center sm:px-6 sm:py-20 lg:px-8">
+        <p className="mb-5 text-xs font-semibold uppercase tracking-[0.2em] text-amber-400 sm:text-sm sm:tracking-[0.3em]">
           Integrity • Quality • Excellence
         </p>
-        <h1 className="font-heading text-4xl font-bold leading-tight text-white sm:text-5xl lg:text-6xl">
+        <h1 className="font-heading text-4xl font-bold leading-[1.1] tracking-tight text-white sm:text-6xl lg:text-7xl">
           Trusted Inspection &amp; Quality Solutions
         </h1>
         <p className="mx-auto mt-5 max-w-3xl text-base font-semibold text-steel-300 sm:text-lg">
           Independent Inspection | Quality Assurance | Technical Services
         </p>
-        <p className="mx-auto mt-6 max-w-3xl text-base text-steel-100/90 sm:text-lg">
-          RIQS – Ritvish Inspection &amp; Quality Services provides
-          professional inspection, quality assurance, and technical services
-          to the Oil &amp; Gas, Petrochemical, Energy, Marine, Construction,
+        {/* Kept to a single sentence so the CTAs stay above the fold on small
+            phones. The longer supporting copy lives in the About section. */}
+        <p className="mx-auto mt-6 max-w-2xl text-base text-steel-100/90 sm:text-lg">
+          Professional inspection, quality assurance and technical services
+          for the Oil &amp; Gas, Petrochemical, Energy, Marine, Construction
           and Industrial sectors.
-        </p>
-        <p className="mx-auto mt-4 max-w-3xl text-base text-steel-100/90 sm:text-lg">
-          We support clients, EPC contractors, fabrication yards, and project
-          teams in maintaining the highest standards of quality, safety,
-          integrity, and regulatory compliance throughout the project
-          lifecycle.
         </p>
 
         <div className="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row">

@@ -16,7 +16,7 @@ export default function ClientsPartners() {
   return (
     <section id="clients" className="bg-white py-20 sm:py-28">
       <div className="mx-auto max-w-5xl px-4 text-center sm:px-6 lg:px-8">
-        <p className="text-xs font-bold uppercase tracking-[0.2em] text-amber-600">
+        <p className="text-xs font-bold uppercase tracking-[0.2em] text-amber-700">
           Who We Work With
         </p>
         <h2 className="mt-2 font-heading text-3xl font-bold text-navy-900 sm:text-4xl">

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Menu, X } from "lucide-react";
-import logo from "../assets/logo.png";
+import logo from "../assets/logo.webp";
 
 const NAV_LINKS = [
   { label: "About", href: "#about" },
@@ -11,9 +11,10 @@ const NAV_LINKS = [
   { label: "Contact", href: "#contact" },
 ];
 
-// Logo image lives at src/assets/logo.png (icon + wordmark, cropped and
-// cleaned up from the source file RIQS_logo.jpg). Swap the import above to
-// replace it with an updated logo file later.
+// Logo image lives at src/assets/logo.webp (icon + wordmark, cropped and
+// cleaned up from the source file RIQS_logo.jpg, then resized to 80px tall —
+// 2x the largest rendered size). Swap the import above to replace it with an
+// updated logo file later; keep it small, the original 520px PNG was 145KB.
 function LogoBadge() {
   return (
     <a href="#top" className="flex items-center gap-3">
@@ -62,6 +63,25 @@ export default function Navbar() {
     return () => observer.disconnect();
   }, []);
 
+  // Close the mobile menu on Escape, and stop the page behind it scrolling
+  // while it's open.
+  useEffect(() => {
+    if (!open) return undefined;
+
+    const onKeyDown = (e) => {
+      if (e.key === "Escape") setOpen(false);
+    };
+    document.addEventListener("keydown", onKeyDown);
+
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+
+    return () => {
+      document.removeEventListener("keydown", onKeyDown);
+      document.body.style.overflow = previousOverflow;
+    };
+  }, [open]);
+
   return (
     <header
       id="top"
@@ -107,6 +127,8 @@ export default function Navbar() {
           type="button"
           className="text-white lg:hidden"
           aria-label={open ? "Close menu" : "Open menu"}
+          aria-expanded={open}
+          aria-controls="mobile-menu"
           onClick={() => setOpen((v) => !v)}
         >
           {open ? <X size={28} /> : <Menu size={28} />}
@@ -114,7 +136,10 @@ export default function Navbar() {
       </nav>
 
       {open && (
-        <div className="border-t border-steel-700/50 bg-navy-900 lg:hidden">
+        <div
+          id="mobile-menu"
+          className="border-t border-steel-700/50 bg-navy-900 lg:hidden"
+        >
           <ul className="flex flex-col gap-1 px-4 py-4">
             {NAV_LINKS.map((link) => (
               <li key={link.href}>

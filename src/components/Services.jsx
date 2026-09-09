@@ -166,7 +166,7 @@ function ServiceCard({ index, icon: Icon, name, blurb, checklist }) {
             <Icon size={24} />
           </span>
           <div>
-            <span className="text-xs font-bold tracking-wide text-amber-600">
+            <span className="text-xs font-bold tracking-wide text-amber-700">
               {String(index + 1).padStart(2, "0")}
             </span>
             <h3 className="text-lg font-semibold text-navy-900">{name}</h3>
@@ -211,7 +211,7 @@ export default function Services() {
     <section id="services" className="bg-steel-100/40 py-20 sm:py-28">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-2xl text-center">
-          <p className="text-xs font-bold uppercase tracking-[0.2em] text-amber-600">
+          <p className="text-xs font-bold uppercase tracking-[0.2em] text-amber-700">
             What We Do
           </p>
           <h2 className="mt-2 font-heading text-3xl font-bold text-navy-900 sm:text-4xl">

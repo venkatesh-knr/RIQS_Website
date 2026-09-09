@@ -33,7 +33,7 @@ export default function OurApproach() {
     <section id="approach" className="bg-white py-20 sm:py-28">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-2xl text-center">
-          <p className="text-xs font-bold uppercase tracking-[0.2em] text-amber-600">
+          <p className="text-xs font-bold uppercase tracking-[0.2em] text-amber-700">
             How We Work
           </p>
           <h2 className="mt-2 font-heading text-3xl font-bold text-navy-900 sm:text-4xl">
@@ -56,7 +56,7 @@ export default function OurApproach() {
               <span className="relative flex h-16 w-16 items-center justify-center rounded-full bg-navy-900 text-steel-300 ring-8 ring-white">
                 <Icon size={28} />
               </span>
-              <span className="mt-4 text-xs font-bold tracking-wide text-amber-600">
+              <span className="mt-4 text-xs font-bold tracking-wide text-amber-700">
                 {String(index + 1).padStart(2, "0")}
               </span>
               <h3 className="mt-1 font-heading text-lg font-bold text-navy-900">
