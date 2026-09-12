@@ -16,7 +16,7 @@ const CODES_AND_STANDARDS = [
 
 export default function Certifications() {
   return (
-    <section id="certifications" className="bg-steel-100/40 py-20 sm:py-28">
+    <section id="certifications" className="section-y bg-steel-100/40">
       <div className="mx-auto max-w-7xl px-4 text-center sm:px-6 lg:px-8">
         <Reveal>
           <p className="text-xs font-bold uppercase tracking-[0.2em] text-amber-700">

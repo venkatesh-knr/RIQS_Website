@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Mail, Globe, Phone, MapPin } from "lucide-react";
+import { Mail, Globe, Phone, MapPin, AlertCircle } from "lucide-react";
 import Reveal from "./Reveal";
 
 const CONTACT_ITEMS = [
@@ -16,16 +16,31 @@ const CONTACT_ITEMS = [
 // service that accepts a JSON POST works — see README.md.
 const FORM_ENDPOINT = import.meta.env.VITE_FORM_ENDPOINT;
 
+// `half` fields sit side by side from the sm breakpoint, keeping the form
+// short enough for the section to fit a laptop window.
 const FIELDS = [
-  { name: "name", label: "Name", type: "text", required: true, autoComplete: "name" },
-  { name: "email", label: "Email", type: "email", required: true, autoComplete: "email" },
-  { name: "phone", label: "Phone", type: "tel", required: false, autoComplete: "tel" },
+  { name: "name", label: "Name", type: "text", required: true, autoComplete: "name", half: false },
+  { name: "email", label: "Email", type: "email", required: true, autoComplete: "email", half: true },
+  { name: "phone", label: "Phone", type: "tel", required: false, autoComplete: "tel", half: true },
 ];
+
+// What a visitor is told when a send fails. Deliberately no fallback email
+// address: the one the site shows elsewhere doesn't exist yet, and pointing
+// people at it would lose the enquiry a second time.
+const ERROR_COPY = {
+  offline: "You seem to be offline. Check your connection, then press Try again.",
+  rejected: "Something went wrong on our end. Please press Try again in a moment.",
+};
+
+const inputClass =
+  "w-full rounded-md border border-gray-300 px-4 py-2.5 text-sm text-navy-900 focus:border-steel-500 focus:outline-none focus:ring-1 focus:ring-steel-500";
 
 export default function Contact() {
   const [form, setForm] = useState({ name: "", email: "", phone: "", message: "" });
   // idle | sending | sent | error
   const [status, setStatus] = useState("idle");
+  // Why the last send failed — a key of ERROR_COPY.
+  const [errorKind, setErrorKind] = useState(null);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -55,6 +70,7 @@ export default function Contact() {
     }
 
     setStatus("sending");
+    setErrorKind(null);
     try {
       const response = await fetch(FORM_ENDPOINT, {
         method: "POST",
@@ -75,15 +91,14 @@ export default function Contact() {
       setStatus("sent");
       setForm({ name: "", email: "", phone: "", message: "" });
     } catch {
+      // The form keeps what the visitor typed, so a retry is one click.
+      setErrorKind(navigator.onLine === false ? "offline" : "rejected");
       setStatus("error");
     }
   };
 
-  const inputClass =
-    "w-full rounded-md border border-gray-300 px-4 py-2.5 text-sm text-navy-900 focus:border-steel-500 focus:outline-none focus:ring-1 focus:ring-steel-500";
-
   return (
-    <section id="contact" className="bg-navy-900 py-20 sm:py-28">
+    <section id="contact" className="section-y bg-navy-900">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <Reveal className="mx-auto max-w-2xl text-center">
           <p className="text-xs font-bold uppercase tracking-[0.2em] text-amber-400">
@@ -95,23 +110,29 @@ export default function Contact() {
           <p className="mt-3 text-sm font-semibold uppercase tracking-wide text-steel-300">
             Need Reliable Inspection Support?
           </p>
-          <p className="mt-6 text-base text-steel-100/90 sm:text-lg">
-            Tell us about your project, inspection requirement or quality
-            challenge.
-          </p>
-          <p className="mt-3 text-base text-steel-100/90 sm:text-lg">
-            Our team can review your requirements and provide an appropriate
-            inspection or quality service solution.
-          </p>
         </Reveal>
 
-        <div className="mt-14 grid grid-cols-1 gap-12 lg:grid-cols-2">
+        <div className="mt-10 grid grid-cols-1 gap-10 lg:grid-cols-2 lg:gap-12">
+          {/* The intro copy sits beside the form rather than above both
+              columns, so the section fits a laptop window. */}
           <Reveal className="space-y-6">
-            <p className="text-lg font-semibold text-white">Contact RIQS</p>
-            <p className="text-sm text-steel-100/80">
-              RIQS – Ritvish Inspection &amp; Quality Services
-            </p>
-            <ul className="space-y-4">
+            <div className="space-y-3 text-base leading-relaxed text-steel-100/90">
+              <p>
+                Tell us about your project, inspection requirement or quality
+                challenge.
+              </p>
+              <p>
+                Our team can review your requirements and provide an
+                appropriate inspection or quality service solution.
+              </p>
+            </div>
+            <div>
+              <p className="text-lg font-semibold text-white">Contact RIQS</p>
+              <p className="mt-1 text-sm text-steel-100/80">
+                RIQS – Ritvish Inspection &amp; Quality Services
+              </p>
+            </div>
+            <ul className="space-y-3">
               {CONTACT_ITEMS.map(({ icon: Icon, label, href }) => (
                 <li key={label} className="flex items-center gap-3 text-steel-100">
                   <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-steel-600/30 text-steel-300">
@@ -132,7 +153,7 @@ export default function Contact() {
           <Reveal delay={120}>
             <form
               onSubmit={handleSubmit}
-              className="rounded-xl bg-white p-6 shadow-xl sm:p-8"
+              className="rounded-xl bg-white p-6 shadow-xl"
             >
               {status === "sent" ? (
                 <div
@@ -151,9 +172,9 @@ export default function Contact() {
                   </p>
                 </div>
               ) : (
-                <div className="space-y-4">
-                  {FIELDS.map(({ name, label, type, required, autoComplete }) => (
-                    <div key={name}>
+                <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                  {FIELDS.map(({ name, label, type, required, autoComplete, half }) => (
+                    <div key={name} className={half ? "" : "sm:col-span-2"}>
                       <label
                         htmlFor={name}
                         className="mb-1 block text-sm font-medium text-navy-900"
@@ -178,7 +199,7 @@ export default function Contact() {
                     </div>
                   ))}
 
-                  <div>
+                  <div className="sm:col-span-2">
                     <label
                       htmlFor="message"
                       className="mb-1 block text-sm font-medium text-navy-900"
@@ -188,7 +209,7 @@ export default function Contact() {
                     <textarea
                       id="message"
                       name="message"
-                      rows={4}
+                      rows={3}
                       required
                       value={form.message}
                       onChange={handleChange}
@@ -196,31 +217,42 @@ export default function Contact() {
                     />
                   </div>
 
-                  {/* aria-live so screen readers announce a failed send. */}
                   <p aria-live="polite" className="sr-only">
                     {status === "sending" ? "Sending your message" : ""}
                   </p>
 
+                  {/* role="alert" so screen readers announce the failure the
+                      moment it appears. */}
                   {status === "error" && (
-                    <p className="rounded-md bg-red-50 px-4 py-3 text-sm text-red-700">
-                      Something went wrong sending your message. Please email
-                      us directly at{" "}
-                      <a
-                        href="mailto:info@riqsinspection.com"
-                        className="font-semibold underline"
-                      >
-                        info@riqsinspection.com
-                      </a>
-                      .
-                    </p>
+                    <div
+                      role="alert"
+                      className="flex gap-3 rounded-md border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-800 sm:col-span-2"
+                    >
+                      <AlertCircle
+                        size={18}
+                        aria-hidden="true"
+                        className="mt-0.5 shrink-0"
+                      />
+                      <div>
+                        <p className="font-semibold">Your message wasn&apos;t sent.</p>
+                        <p className="mt-1">
+                          {ERROR_COPY[errorKind] ?? ERROR_COPY.rejected} Everything
+                          you typed is still in the form.
+                        </p>
+                      </div>
+                    </div>
                   )}
 
                   <button
                     type="submit"
                     disabled={status === "sending"}
-                    className="w-full rounded-md bg-steel-500 px-6 py-3 text-sm font-semibold text-white transition-colors hover:bg-steel-400 disabled:cursor-not-allowed disabled:opacity-60"
+                    className="w-full rounded-md bg-steel-500 px-6 py-3 text-sm font-semibold text-white transition-colors hover:bg-steel-400 disabled:cursor-not-allowed disabled:opacity-60 sm:col-span-2"
                   >
-                    {status === "sending" ? "Sending…" : "Submit"}
+                    {status === "sending"
+                      ? "Sending…"
+                      : status === "error"
+                        ? "Try again"
+                        : "Submit"}
                   </button>
                 </div>
               )}

@@ -31,7 +31,7 @@ const STEPS = [
 
 export default function OurApproach() {
   return (
-    <section id="approach" className="bg-white py-20 sm:py-28">
+    <section id="approach" className="section-y bg-white">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <Reveal className="mx-auto max-w-2xl text-center">
           <p className="text-xs font-bold uppercase tracking-[0.2em] text-amber-700">

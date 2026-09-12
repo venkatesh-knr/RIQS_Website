@@ -41,7 +41,7 @@ const INDUSTRIES = [
 
 export default function Industries() {
   return (
-    <section id="industries" className="bg-navy-900 py-20 sm:py-28">
+    <section id="industries" className="section-y bg-navy-900">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <Reveal className="mx-auto max-w-2xl text-center">
           <p className="text-xs font-bold uppercase tracking-[0.2em] text-amber-400">
@@ -52,7 +52,8 @@ export default function Industries() {
           </h2>
         </Reveal>
 
-        <div className="mt-14 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+        {/* Four columns from lg keep the seven cards to two rows. */}
+        <div className="mt-10 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
           {INDUSTRIES.map(({ icon: Icon, name, desc }, i) => (
             // Static card: no hover lift, because nothing here is clickable.
             <Reveal

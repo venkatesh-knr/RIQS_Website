@@ -67,8 +67,11 @@ const COLUMNS = [
 
 export default function WorkingWithRiqs() {
   return (
-    <section id="working" className="bg-white py-20 sm:py-28">
+    <section id="working" className="section-y bg-white">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        {/* The closing quote serves as the section's subheading, rather than
+            sitting in its own box beneath the columns, to keep the section
+            within a laptop window. */}
         <Reveal className="mx-auto max-w-2xl text-center">
           <p className="text-xs font-bold uppercase tracking-[0.2em] text-amber-700">
             How We Deliver
@@ -76,27 +79,28 @@ export default function WorkingWithRiqs() {
           <h2 className="mt-2 font-heading text-3xl font-bold text-navy-900 sm:text-4xl">
             Working With RIQS
           </h2>
-          <p className="mt-3 text-base leading-relaxed text-gray-600">
-            Competent people, traceable documentation, and experience across
-            the project supply chain.
+          <p className="mt-2 font-heading text-xl font-semibold text-steel-500">
+            &ldquo;Your project quality is our responsibility.&rdquo;
           </p>
         </Reveal>
 
-        <div className="mt-14 grid grid-cols-1 gap-6 lg:grid-cols-3">
+        <div className="mt-6 grid grid-cols-1 gap-6 lg:grid-cols-3">
           {COLUMNS.map(({ icon: Icon, title, intro, items, footnote }, i) => (
             <Reveal key={title} delay={i * 90}>
-              <div className="flex h-full flex-col rounded-xl border border-steel-100 bg-steel-100/30 p-6 sm:p-8">
-                <span className="flex h-12 w-12 items-center justify-center rounded-lg bg-navy-900 text-steel-300">
-                  <Icon size={24} />
-                </span>
-                <h3 className="mt-4 font-heading text-xl font-bold text-navy-900">
-                  {title}
-                </h3>
+              <div className="flex h-full flex-col rounded-xl border border-steel-100 bg-steel-100/30 p-5">
+                <div className="flex items-center gap-3">
+                  <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-navy-900 text-steel-300">
+                    <Icon size={20} />
+                  </span>
+                  <h3 className="font-heading text-xl font-bold text-navy-900">
+                    {title}
+                  </h3>
+                </div>
                 <p className="mt-2 text-sm leading-relaxed text-gray-600">
                   {intro}
                 </p>
 
-                <ul className="mt-5 space-y-2.5">
+                <ul className="mt-3 space-y-1">
                   {items.map((item) => (
                     <li
                       key={item}
@@ -112,7 +116,7 @@ export default function WorkingWithRiqs() {
                 </ul>
 
                 {footnote && (
-                  <p className="mt-auto pt-5 text-xs leading-relaxed text-gray-500">
+                  <p className="mt-auto pt-3 text-xs leading-relaxed text-gray-500">
                     {footnote}
                   </p>
                 )}
@@ -120,14 +124,6 @@ export default function WorkingWithRiqs() {
             </Reveal>
           ))}
         </div>
-
-        <Reveal className="mx-auto mt-12 max-w-2xl">
-          <div className="rounded-xl border-l-4 border-amber-500 bg-steel-100/40 p-6 text-center sm:p-8">
-            <p className="font-heading text-xl font-bold text-navy-900 sm:text-2xl">
-              &ldquo;Your project quality is our responsibility.&rdquo;
-            </p>
-          </div>
-        </Reveal>
       </div>
     </section>
   );

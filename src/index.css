@@ -42,6 +42,21 @@ h4 {
   font-family: var(--font-heading);
 }
 
+/* Vertical rhythm for page sections, sized so each section fits a laptop
+   window at 100% zoom wherever its content allows. The top padding is the
+   larger because, when a nav link jumps to a section, its first 72px sit
+   under the fixed navbar; headings then land just below the bar. Short
+   desktop windows (e.g. a 1080p screen at 125% scaling) get tighter padding. */
+@utility section-y {
+  padding-top: 6rem;
+  padding-bottom: 4rem;
+
+  @media (width >= 64rem) and (height <= 50rem) {
+    padding-top: 5.5rem;
+    padding-bottom: 3rem;
+  }
+}
+
 /* Visible keyboard focus ring. Tailwind's preflight removes the browser
    default, so without this keyboard users get no focus indicator at all.
    Amber-600 clears the 3:1 non-text contrast bar against both the white

@@ -30,7 +30,7 @@ const REASONS = [
 
 export default function WhyUs() {
   return (
-    <section id="why-us" className="bg-white py-20 sm:py-28">
+    <section id="why-us" className="section-y bg-white">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <Reveal className="mx-auto max-w-2xl text-center">
           <p className="text-xs font-bold uppercase tracking-[0.2em] text-amber-700">
@@ -44,12 +44,13 @@ export default function WhyUs() {
           </p>
         </Reveal>
 
-        <div className="mx-auto mt-14 grid max-w-4xl grid-cols-1 gap-5 sm:grid-cols-2">
+        {/* Three columns from lg: two rows instead of three. */}
+        <div className="mx-auto mt-10 grid max-w-6xl grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
           {REASONS.map(({ title, desc }, i) => (
             // Static card: nothing here is clickable, so no hover lift.
             <Reveal
               key={title}
-              delay={(i % 2) * 80}
+              delay={(i % 3) * 80}
               className="flex items-start gap-3 rounded-lg border border-steel-100 bg-steel-100/30 p-5 shadow-sm"
             >
               <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-navy-900 text-steel-300">

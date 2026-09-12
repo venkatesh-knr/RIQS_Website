@@ -199,7 +199,7 @@ function ServiceCard({ index, icon: Icon, name, blurb, checklist }) {
 
   return (
     <div className="relative flex h-full flex-col rounded-xl border border-transparent bg-white shadow-sm transition-all duration-200 hover:-translate-y-1 hover:border-amber-400/60 hover:shadow-lg">
-      <div className="flex flex-1 flex-col p-6">
+      <div className="flex flex-1 flex-col p-5">
         <div className="flex items-start gap-4">
           <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-lg bg-navy-900 text-steel-300">
             <Icon size={24} />
@@ -224,12 +224,12 @@ function ServiceCard({ index, icon: Icon, name, blurb, checklist }) {
           </div>
         </div>
 
-        <p className="mt-4 text-sm leading-relaxed text-gray-600">{blurb}</p>
+        <p className="mt-3 text-sm leading-relaxed text-gray-600">{blurb}</p>
 
         {/* Decorative: the button already announces that it opens details. */}
         <span
           aria-hidden="true"
-          className="mt-auto flex items-center gap-1.5 pt-4 text-sm font-semibold text-steel-500"
+          className="mt-auto flex items-center gap-1.5 pt-3 text-sm font-semibold text-steel-500"
         >
           View full scope
           <ChevronRight size={16} />
@@ -310,7 +310,7 @@ function ServiceCard({ index, icon: Icon, name, blurb, checklist }) {
 
 export default function Services() {
   return (
-    <section id="services" className="bg-steel-100/40 py-20 sm:py-28">
+    <section id="services" className="section-y bg-steel-100/40">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <Reveal className="mx-auto max-w-2xl text-center">
           <p className="text-xs font-bold uppercase tracking-[0.2em] text-amber-700">
@@ -322,10 +322,11 @@ export default function Services() {
         </Reveal>
 
         {/* Default stretch alignment gives each row equal-height cards now
-            that nothing expands in place. */}
-        <div className="mt-14 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            that nothing expands in place. Four columns at xl keep the eight
+            cards to two rows, so the section fits a laptop window. */}
+        <div className="mt-8 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
           {SERVICES.map((service, index) => (
-            <Reveal key={service.name} delay={(index % 3) * 90}>
+            <Reveal key={service.name} delay={(index % 4) * 80}>
               <ServiceCard index={index} {...service} />
             </Reveal>
           ))}

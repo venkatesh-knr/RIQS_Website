@@ -31,15 +31,17 @@ const VALUES = [
 
 export default function QualityIntegrity() {
   return (
-    <section id="quality" className="bg-navy-900 py-20 sm:py-28">
+    <section id="quality" className="section-y bg-navy-900">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 items-center gap-12 lg:grid-cols-5 lg:gap-16">
+        <div className="grid grid-cols-1 gap-10 lg:grid-cols-5 lg:gap-14">
           {/* Supporting visual block — a large stylized icon panel standing
-              in for a photo. Drop a real photo in as
+              in for a photo. On desktop it stretches to match the text
+              column rather than being a fixed square, which was the tallest
+              thing in the section. Drop a real photo in as
               `src/assets/quality-photo.jpg` and swap the pattern background
               for a cover-and-centered background-image if preferred. */}
           <div className="order-2 lg:order-1 lg:col-span-2">
-            <div className="relative flex aspect-square items-center justify-center overflow-hidden rounded-2xl bg-navy-950">
+            <div className="relative flex h-full min-h-56 items-center justify-center overflow-hidden rounded-2xl bg-navy-950">
               <div
                 aria-hidden="true"
                 className="pointer-events-none absolute inset-0 opacity-25"
@@ -51,7 +53,7 @@ export default function QualityIntegrity() {
               />
               <ShieldCheck
                 className="relative text-steel-500/70"
-                size={140}
+                size={120}
                 strokeWidth={1}
               />
             </div>
@@ -68,7 +70,7 @@ export default function QualityIntegrity() {
               Built on Professionalism. Driven by Quality.
             </p>
 
-            <div className="mt-6 space-y-4 text-base leading-relaxed text-steel-100/90 sm:text-lg">
+            <div className="mt-5 space-y-3 text-base leading-relaxed text-steel-100/90">
               <p>At RIQS, quality is not limited to identifying defects.</p>
               <p>
                 Our approach is to prevent defects, identify risks early,
@@ -84,19 +86,19 @@ export default function QualityIntegrity() {
           </div>
         </div>
 
-        <h3 className="mt-16 text-center font-heading text-xl font-bold text-white">
+        <h3 className="mt-8 text-center font-heading text-xl font-bold text-white">
           Our Core Values
         </h3>
-        <div className="mt-8 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-5">
+        <div className="mt-5 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-5">
           {VALUES.map(({ icon: Icon, name, desc }, i) => (
             // Static card: nothing here is clickable, so no hover lift.
             <Reveal
               key={name}
               delay={(i % 5) * 80}
-              className="flex flex-col items-center gap-3 rounded-xl border border-steel-700/60 bg-navy-800/60 p-6 text-center shadow-sm"
+              className="flex flex-col items-center gap-2.5 rounded-xl border border-steel-700/60 bg-navy-800/60 p-5 text-center shadow-sm"
             >
-              <span className="flex h-12 w-12 items-center justify-center rounded-lg bg-navy-950 text-steel-300">
-                <Icon size={24} />
+              <span className="flex h-10 w-10 items-center justify-center rounded-lg bg-navy-950 text-steel-300">
+                <Icon size={20} />
               </span>
               <span className="text-sm font-semibold text-steel-100">
                 {name}
