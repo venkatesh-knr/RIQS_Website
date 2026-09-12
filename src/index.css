@@ -61,6 +61,24 @@ h4 {
   }
 }
 
+/* Vertical padding inside the hero. The hero shares the first screen with
+   the stats strip, so on short desktop windows it tightens to keep both in
+   view. */
+@utility hero-y {
+  padding-top: 3rem;
+  padding-bottom: 3rem;
+
+  @media (width >= 40rem) {
+    padding-top: 5rem;
+    padding-bottom: 5rem;
+  }
+
+  @media (width >= 40rem) and (height <= 50rem) {
+    padding-top: 2.5rem;
+    padding-bottom: 2.5rem;
+  }
+}
+
 /* Visible keyboard focus ring. Tailwind's preflight removes the browser
    default, so without this keyboard users get no focus indicator at all.
    Amber-600 clears the 3:1 non-text contrast bar against both the white

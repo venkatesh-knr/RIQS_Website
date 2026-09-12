@@ -8,9 +8,9 @@ export default function Hero() {
       // background layers below for a single
       // background-image (cover, centered) layer plus the overlay div that
       // already follows it.
-      // min-h-svh (small viewport height) rather than min-h-screen so mobile
-      // browser chrome doesn't push the CTAs below the fold.
-      className="relative flex min-h-svh items-center overflow-hidden bg-gradient-to-br from-navy-950 via-navy-900 to-navy-800 pt-20"
+      // flex-1: fills the home screen above the stats strip. The wrapper in
+      // App.jsx is min-h-svh, so mobile browser chrome can't hide the CTAs.
+      className="relative flex flex-1 items-center overflow-hidden bg-gradient-to-br from-navy-950 via-navy-900 to-navy-800 pt-20"
     >
       {/* Layer 1: industrial-toned base gradient + blueprint grid, standing in for a photo */}
       <div
@@ -45,7 +45,7 @@ export default function Hero() {
         className="pointer-events-none absolute -bottom-32 -left-32 h-96 w-96 rounded-full bg-steel-500/10 blur-3xl"
       />
 
-      <div className="relative mx-auto max-w-5xl px-4 py-12 text-center sm:px-6 sm:py-20 lg:px-8">
+      <div className="relative mx-auto max-w-5xl hero-y px-4 text-center sm:px-6 lg:px-8">
         <p className="mb-5 text-xs font-semibold uppercase tracking-[0.2em] text-amber-400 sm:text-sm sm:tracking-[0.3em]">
           Integrity • Quality • Excellence
         </p>

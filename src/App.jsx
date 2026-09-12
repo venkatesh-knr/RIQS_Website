@@ -22,8 +22,14 @@ function App() {
           jumping to it never scrolls. */}
       <div id="top" />
       <Navbar />
-      <Hero />
-      <StatsBar />
+      {/* The home screen: the hero and the stats strip together fill exactly
+          one window, so "Home" shows the stats too. On its own the hero
+          filled the window and pushed the strip just below it, where no nav
+          link ever landed. */}
+      <div className="flex min-h-svh flex-col">
+        <Hero />
+        <StatsBar />
+      </div>
       <About />
       <Services />
       <Industries />
