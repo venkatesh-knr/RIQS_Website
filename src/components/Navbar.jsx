@@ -2,12 +2,17 @@ import { useEffect, useState } from "react";
 import { Menu, X } from "lucide-react";
 import logo from "../assets/logo.webp";
 
+// In page order, one entry per section, so every section is reachable from
+// the nav and the active-section highlight below can track all of them.
 const NAV_LINKS = [
   { label: "About", href: "#about" },
   { label: "Services", href: "#services" },
   { label: "Industries", href: "#industries" },
-  { label: "Why Us", href: "#why-us" },
+  { label: "Approach", href: "#approach" },
   { label: "Certifications", href: "#certifications" },
+  { label: "Why Us", href: "#why-us" },
+  { label: "Quality", href: "#quality" },
+  { label: "Working With Us", href: "#working" },
   { label: "Contact", href: "#contact" },
 ];
 
@@ -15,6 +20,9 @@ const NAV_LINKS = [
 // cleaned up from the source file RIQS_logo.jpg, then resized to 80px tall —
 // 2x the largest rendered size). Swap the import above to replace it with an
 // updated logo file later; keep it small, the original 520px PNG was 145KB.
+//
+// It links to #top, the zero-height anchor at the start of the page in
+// App.jsx, rather than to this fixed header.
 function LogoBadge() {
   return (
     <a href="#top" className="flex items-center gap-3">
@@ -84,7 +92,6 @@ export default function Navbar() {
 
   return (
     <header
-      id="top"
       className={`fixed inset-x-0 top-0 z-50 transition-colors duration-300 ${
         scrolled
           ? "bg-navy-900/95 shadow-lg shadow-black/20 backdrop-blur"
@@ -94,14 +101,17 @@ export default function Navbar() {
       <nav className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3 sm:px-6 lg:px-8">
         <LogoBadge />
 
-        <ul className="hidden items-center gap-8 lg:flex">
+        {/* Nine links need roughly 1100px alongside the logo and the quote
+            button, so the inline nav starts at xl; below that the menu
+            button takes over. */}
+        <ul className="hidden items-center gap-5 xl:flex">
           {NAV_LINKS.map((link) => {
             const active = activeHref === link.href;
             return (
               <li key={link.href}>
                 <a
                   href={link.href}
-                  className={`relative pb-1 text-sm font-medium transition-colors after:absolute after:bottom-0 after:left-0 after:h-0.5 after:bg-amber-400 after:transition-all after:duration-200 ${
+                  className={`relative whitespace-nowrap pb-1 text-sm font-medium transition-colors after:absolute after:bottom-0 after:left-0 after:h-0.5 after:bg-amber-400 after:transition-all after:duration-200 ${
                     active
                       ? "text-white after:w-full"
                       : "text-steel-100/90 after:w-0 hover:text-white hover:after:w-full"
@@ -114,31 +124,33 @@ export default function Navbar() {
           })}
         </ul>
 
-        <div className="hidden lg:block">
+        <div className="flex items-center gap-4">
           <a
             href="#contact"
-            className="rounded-md bg-steel-500 px-5 py-2.5 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-steel-400"
+            className="hidden whitespace-nowrap rounded-md bg-steel-500 px-5 py-2.5 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-steel-400 lg:block"
           >
             Request a Quote
           </a>
-        </div>
 
-        <button
-          type="button"
-          className="text-white lg:hidden"
-          aria-label={open ? "Close menu" : "Open menu"}
-          aria-expanded={open}
-          aria-controls="mobile-menu"
-          onClick={() => setOpen((v) => !v)}
-        >
-          {open ? <X size={28} /> : <Menu size={28} />}
-        </button>
+          <button
+            type="button"
+            className="text-white xl:hidden"
+            aria-label={open ? "Close menu" : "Open menu"}
+            aria-expanded={open}
+            aria-controls="mobile-menu"
+            onClick={() => setOpen((v) => !v)}
+          >
+            {open ? <X size={28} /> : <Menu size={28} />}
+          </button>
+        </div>
       </nav>
 
       {open && (
         <div
           id="mobile-menu"
-          className="border-t border-steel-700/50 bg-navy-900 lg:hidden"
+          // Scrolls internally: with nine links the list can outgrow a phone
+          // held in landscape, and the page behind it is scroll-locked.
+          className="max-h-[calc(100svh-4rem)] overflow-y-auto border-t border-steel-700/50 bg-navy-900 xl:hidden"
         >
           <ul className="flex flex-col gap-1 px-4 py-4">
             {NAV_LINKS.map((link) => (

@@ -23,10 +23,16 @@
 
 html {
   scroll-behavior: smooth;
+  /* Keep the scrollbar's space reserved when a dialog or the mobile menu
+     locks scrolling, so the page behind doesn't reflow sideways. */
+  scrollbar-gutter: stable;
 }
 
 body {
   font-family: var(--font-body);
+  /* Only ever visible in that reserved gutter and in overscroll, where it
+     should match the dark backdrop and navy hero/footer, not show white. */
+  background-color: var(--color-navy-950);
 }
 
 h1,

@@ -1,4 +1,4 @@
-import { useId, useState } from "react";
+import { useId, useRef } from "react";
 import Reveal from "./Reveal";
 import {
   Flame,
@@ -9,8 +9,9 @@ import {
   GitBranch,
   Handshake,
   Lightbulb,
-  ChevronDown,
+  ChevronRight,
   Check,
+  X,
 } from "lucide-react";
 
 const SERVICES = [
@@ -156,31 +157,65 @@ const SERVICES = [
   },
 ];
 
+// Each card opens its full scope of work in a modal <dialog>. This replaced
+// an inline accordion that pushed the rest of the page down by ~370px
+// whenever a card expanded; a modal leaves the page layout untouched. The
+// native dialog supplies the focus trap, Escape-to-close and aria-modal.
 function ServiceCard({ index, icon: Icon, name, blurb, checklist }) {
-  const [open, setOpen] = useState(false);
-  const panelId = useId();
+  const dialogRef = useRef(null);
+  const triggerRef = useRef(null);
+  // Set when the dialog closes via its "Request a Quote" link, so focus
+  // follows the visitor to the form instead of snapping back to the card.
+  const goingToContact = useRef(false);
+  const titleId = useId();
+  const number = String(index + 1).padStart(2, "0");
 
-  // The whole card is the toggle: the button carries a stretched ::after
-  // overlay covering the card, so the click target is the full card while
-  // the accessible name stays just the service title. The button sits inside
-  // the h3 per the WAI-ARIA accordion pattern.
+  const openDialog = () => {
+    document.body.style.overflow = "hidden";
+    dialogRef.current?.showModal();
+  };
+
+  const closeDialog = () => {
+    document.body.style.overflow = "";
+    dialogRef.current?.close();
+  };
+
+  // Runs however the dialog closed: close button, Escape, backdrop click,
+  // or the quote link.
+  const handleClose = () => {
+    document.body.style.overflow = "";
+    const target = goingToContact.current
+      ? document.getElementById("name")
+      : triggerRef.current;
+    goingToContact.current = false;
+    target?.focus({ preventScroll: true });
+  };
+
+  // The inner panel fills the dialog box, so a click whose target is the
+  // <dialog> element itself can only have landed on the backdrop.
+  const handleDialogClick = (e) => {
+    if (e.target === dialogRef.current) closeDialog();
+  };
+
   return (
     <div className="relative flex h-full flex-col rounded-xl border border-transparent bg-white shadow-sm transition-all duration-200 hover:-translate-y-1 hover:border-amber-400/60 hover:shadow-lg">
-      <div className="p-6">
+      <div className="flex flex-1 flex-col p-6">
         <div className="flex items-start gap-4">
           <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-lg bg-navy-900 text-steel-300">
             <Icon size={24} />
           </span>
           <div>
             <span className="text-xs font-bold tracking-wide text-amber-700">
-              {String(index + 1).padStart(2, "0")}
+              {number}
             </span>
             <h3 className="text-lg font-semibold text-navy-900">
+              {/* Stretched ::after overlay makes the whole card the click
+                  target while the accessible name stays the service title. */}
               <button
+                ref={triggerRef}
                 type="button"
-                onClick={() => setOpen((v) => !v)}
-                aria-expanded={open}
-                aria-controls={panelId}
+                onClick={openDialog}
+                aria-haspopup="dialog"
                 className="text-left after:absolute after:inset-0 after:rounded-xl after:content-['']"
               >
                 {name}
@@ -191,35 +226,84 @@ function ServiceCard({ index, icon: Icon, name, blurb, checklist }) {
 
         <p className="mt-4 text-sm leading-relaxed text-gray-600">{blurb}</p>
 
-        {/* Decorative: the button above already announces expanded state. */}
+        {/* Decorative: the button already announces that it opens details. */}
         <span
           aria-hidden="true"
-          className="mt-4 flex items-center gap-1.5 text-sm font-semibold text-steel-500"
+          className="mt-auto flex items-center gap-1.5 pt-4 text-sm font-semibold text-steel-500"
         >
-          {open ? "Hide details" : "View details"}
-          <ChevronDown
-            size={16}
-            className={`transition-transform duration-200 ${open ? "rotate-180" : ""}`}
-          />
+          View full scope
+          <ChevronRight size={16} />
         </span>
       </div>
 
-      {open && (
-        <ul
-          id={panelId}
-          className="mx-6 mb-6 space-y-2 border-t border-steel-100 pt-4"
-        >
-          {checklist.map((item) => (
-            <li
-              key={item}
-              className="flex items-start gap-2 text-sm text-gray-600"
+      <dialog
+        ref={dialogRef}
+        aria-labelledby={titleId}
+        onClose={handleClose}
+        onClick={handleDialogClick}
+        className="m-auto w-[calc(100%-2rem)] max-w-2xl rounded-xl border-0 bg-white p-0 text-left shadow-2xl backdrop:bg-navy-950/70 backdrop:backdrop-blur-sm"
+      >
+        <div className="max-h-[90svh] overflow-y-auto p-6 sm:p-8">
+          <div className="flex items-start justify-between gap-4">
+            <div className="flex items-start gap-4">
+              <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-lg bg-navy-900 text-steel-300">
+                <Icon size={24} />
+              </span>
+              <div>
+                <span className="text-xs font-bold tracking-wide text-amber-700">
+                  {number}
+                </span>
+                <h3
+                  id={titleId}
+                  className="font-heading text-2xl font-bold text-navy-900"
+                >
+                  {name}
+                </h3>
+              </div>
+            </div>
+            <button
+              type="button"
+              onClick={closeDialog}
+              aria-label={`Close ${name} details`}
+              className="-mr-2 -mt-2 rounded-md p-2 text-gray-500 transition-colors hover:bg-steel-100 hover:text-navy-900"
             >
-              <Check size={16} className="mt-0.5 shrink-0 text-steel-500" />
-              {item}
-            </li>
-          ))}
-        </ul>
-      )}
+              <X size={20} />
+            </button>
+          </div>
+
+          <p className="mt-4 text-sm leading-relaxed text-gray-600 sm:text-base">
+            {blurb}
+          </p>
+
+          <p className="mt-6 text-xs font-bold uppercase tracking-[0.2em] text-amber-700">
+            Scope includes
+          </p>
+          <ul className="mt-3 grid grid-cols-1 gap-x-6 gap-y-2.5 sm:grid-cols-2">
+            {checklist.map((item) => (
+              <li
+                key={item}
+                className="flex items-start gap-2 text-sm text-gray-700"
+              >
+                <Check size={16} className="mt-0.5 shrink-0 text-steel-500" />
+                {item}
+              </li>
+            ))}
+          </ul>
+
+          <div className="mt-8 flex justify-end border-t border-steel-100 pt-6">
+            <a
+              href="#contact"
+              onClick={() => {
+                goingToContact.current = true;
+                closeDialog();
+              }}
+              className="rounded-md bg-steel-500 px-5 py-2.5 text-center text-sm font-semibold text-white transition-colors hover:bg-steel-400"
+            >
+              Request a Quote
+            </a>
+          </div>
+        </div>
+      </dialog>
     </div>
   );
 }
@@ -237,7 +321,9 @@ export default function Services() {
           </h2>
         </Reveal>
 
-        <div className="mt-14 grid grid-cols-1 items-start gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        {/* Default stretch alignment gives each row equal-height cards now
+            that nothing expands in place. */}
+        <div className="mt-14 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {SERVICES.map((service, index) => (
             <Reveal key={service.name} delay={(index % 3) * 90}>
               <ServiceCard index={index} {...service} />

@@ -10,10 +10,10 @@ const CONTACT_ITEMS = [
   { icon: MapPin, label: "Doha, Qatar", href: undefined },
 ];
 
-// Where the form posts. Set VITE_FORM_ENDPOINT in a .env file to switch the
-// form from the mailto: fallback to a real submission endpoint — see
-// README.md for the two-minute setup. Any service that accepts a JSON POST
-// works (Formspree, Web3Forms, Getform, Basin).
+// Where the form posts. For the deployed site VITE_FORM_ENDPOINT comes from a
+// GitHub repository variable the deploy workflow passes into the build;
+// locally, put it in .env.local. Unset falls back to a mailto: link. Any
+// service that accepts a JSON POST works — see README.md.
 const FORM_ENDPOINT = import.meta.env.VITE_FORM_ENDPOINT;
 
 const FIELDS = [
@@ -65,6 +65,13 @@ export default function Contact() {
         }),
       });
       if (!response.ok) throw new Error(`Request failed: ${response.status}`);
+      // A 200 alone isn't proof of delivery: FormSubmit answers 200 with
+      // success:"false" while its destination address still awaits the
+      // one-time activation click, so check the body too.
+      const result = await response.json().catch(() => ({}));
+      if (result.success === false || result.success === "false") {
+        throw new Error(result.message || "Submission was not accepted");
+      }
       setStatus("sent");
       setForm({ name: "", email: "", phone: "", message: "" });
     } catch {

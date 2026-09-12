@@ -17,6 +17,10 @@ import MobileCta from "./components/MobileCta";
 function App() {
   return (
     <>
+      {/* Scroll target for the logo and footer "Home" links. It can't be the
+          navbar itself: that's position:fixed, so it is always "in view" and
+          jumping to it never scrolls. */}
+      <div id="top" />
       <Navbar />
       <Hero />
       <StatsBar />

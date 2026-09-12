@@ -24,52 +24,55 @@ Because this is a *project* page (served from `/RIQS_Website/` rather than
 the domain root), `vite.config.js` sets `base: '/RIQS_Website/'`. If the site
 later moves to a custom domain, change that to `'/'` and update the absolute
 URLs in `index.html` (canonical, `og:url`, `og:image`, and the JSON-LD
-`url`).
+`url`) and in `public/sitemap.xml` and `public/robots.txt`.
 
 ## Contact form
 
-The form in `src/components/Contact.jsx` posts JSON to whatever endpoint is
-in `VITE_FORM_ENDPOINT`. **If that variable is unset it falls back to a
-`mailto:` link**, which opens the visitor's email client — that silently
-does nothing for anyone using webmail, so real enquiries get lost. Setting
-the endpoint is strongly recommended.
+The form in `src/components/Contact.jsx` posts JSON to `VITE_FORM_ENDPOINT`.
+For the deployed site that value is a GitHub **repository variable** of the
+same name (Settings → Secrets and variables → Actions → Variables), which the
+deploy workflow passes into the build. To point the form elsewhere, change
+the variable and re-run the workflow — no code change needed.
 
-To wire it up, create a `.env` file in this directory:
+**Currently set to** `https://formsubmit.co/ajax/<address>` — FormSubmit, a
+free service that needs no account. The first submission sends a one-time
+"Activate Form" email to that address, and **nothing is delivered until the
+link in it is clicked**.
 
-```
-VITE_FORM_ENDPOINT=https://formspree.io/f/YOUR_FORM_ID
-```
+If the variable is unset the form falls back to a `mailto:` link, which does
+nothing for anyone on webmail — don't leave it unset.
 
-Any service accepting a JSON `POST` works — [Formspree](https://formspree.io),
-[Web3Forms](https://web3forms.com), [Getform](https://getform.io),
-[Basin](https://usebasin.com). All have free tiers adequate for this volume.
+To switch to Formspree (or Web3Forms, Getform, Basin), create the form in
+that service and set the variable to its endpoint URL. The form treats a
+non-2xx response, or a JSON body with `success: false`, as a failed send. For
+local testing, put the same variable in `.env.local`.
 
-For the deployed site the variable must also exist at build time in CI. Add
-it as a repository secret, then expose it in the build step of
-`.github/workflows/deploy.yml`:
+**Privacy:** `VITE_`-prefixed values are embedded in the public JavaScript
+bundle, so the destination address is readable by anyone who looks. Before
+promoting the site, switch to a dedicated inbox or to an endpoint that
+doesn't expose the address (a Formspree form ID doesn't).
 
-```yaml
-- run: npm run build
-  env:
-    VITE_FORM_ENDPOINT: ${{ secrets.VITE_FORM_ENDPOINT }}
-```
+## SEO and sharing
 
-Note that `VITE_`-prefixed values are embedded in the client bundle and are
-therefore public. That's expected for a form endpoint — just don't put
-anything genuinely secret behind that prefix.
+- `public/sitemap.xml` and `public/robots.txt` are copied to the site root on
+  build. Crawlers only read `robots.txt` at a domain's root, so while the
+  site lives under `/RIQS_Website/` that file is not consulted; it takes
+  effect after a move to a custom domain. Until then, submit the sitemap URL
+  directly in Google Search Console.
+- `public/og-image.png` (1200×630) is the preview card shown when the link is
+  shared on WhatsApp, LinkedIn and similar. It's a static image; replace the
+  file (same dimensions) to change it. Platforms cache previews, so a change
+  can take a while to appear.
 
 ## Outstanding placeholders
 
-These ship as placeholders and should be replaced before the site is
-promoted:
-
 | What | Where | Note |
 | --- | --- | --- |
+| Company domain and email | `Contact.jsx`, `Footer.jsx`, `MobileCta.jsx`, JSON-LD in `index.html` | **`riqsinspection.com` is not registered.** `info@riqsinspection.com` cannot receive mail and `www.riqsinspection.com` is a dead link |
 | Phone number `+974 XXX XXXX` | `Contact.jsx`, `Footer.jsx` | Also enables a `tel:` link in `MobileCta.jsx` |
 | Stats: 10+ years, 500+ inspections, 20+ inspectors, 8+ industries | `StatsBar.jsx` | **Invented figures.** Publishing unverified credentials is a trust and potentially legal risk |
 | Hero background | `Hero.jsx` | CSS blueprint pattern standing in for photography |
 | Supporting visuals | `About.jsx`, `QualityIntegrity.jsx` | Icon panels standing in for photos |
-| Social share image | `index.html` `og:image` | Currently the 180×180 touch icon; a 1200×630 image renders far better |
 
 Real photography of inspectors and facilities is the single largest
 credibility gap versus comparable firms (HQTS, SGS, Intertek), all of which
