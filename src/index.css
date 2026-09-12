@@ -46,14 +46,24 @@ h4 {
   font-family: var(--font-heading);
 }
 
-/* Vertical rhythm for page sections, sized so each section fits a laptop
-   window at 100% zoom wherever its content allows. The top padding is the
-   larger because, when a nav link jumps to a section, its first 72px sit
-   under the fixed navbar; headings then land just below the bar. Short
+/* Page sections. Each is at least one window tall with its content centred,
+   so jumping to a section from the nav shows that section alone, never the
+   start of the next one; the padding is sized so the content still fits in
+   one window wherever it can. The top padding is the larger because, after
+   a nav jump, a section's first 72px sit under the fixed navbar. Short
    desktop windows (e.g. a 1080p screen at 125% scaling) get tighter padding. */
 @utility section-y {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-height: 100svh;
   padding-top: 6rem;
   padding-bottom: 4rem;
+
+  /* Without this, flex would shrink the mx-auto container to its content. */
+  & > * {
+    width: 100%;
+  }
 
   @media (width >= 64rem) and (height <= 50rem) {
     padding-top: 5.5rem;
