@@ -34,10 +34,13 @@ same name (Settings → Secrets and variables → Actions → Variables), which 
 deploy workflow passes into the build. To point the form elsewhere, change
 the variable and re-run the workflow — no code change needed.
 
-**Currently set to** `https://formsubmit.co/ajax/<address>` — FormSubmit, a
-free service that needs no account. The first submission sends a one-time
-"Activate Form" email to that address, and **nothing is delivered until the
-link in it is clicked**.
+**Currently set to** a FormSubmit endpoint — a free service that needs no
+account — in the form `https://formsubmit.co/ajax/<alias>`, where the alias
+is the random string FormSubmit issues in its activation email. Using the
+alias rather than the inbox address keeps the address out of the site's
+public code. Pointing the form at a new inbox means one fresh "Activate
+Form" email to that inbox, and **nothing is delivered until the link in it
+is clicked**.
 
 If the variable is unset the form falls back to a `mailto:` link, which does
 nothing for anyone on webmail — don't leave it unset.
@@ -48,9 +51,8 @@ non-2xx response, or a JSON body with `success: false`, as a failed send. For
 local testing, put the same variable in `.env.local`.
 
 **Privacy:** `VITE_`-prefixed values are embedded in the public JavaScript
-bundle, so the destination address is readable by anyone who looks. Before
-promoting the site, switch to a dedicated inbox or to an endpoint that
-doesn't expose the address (a Formspree form ID doesn't).
+bundle, so whatever the variable holds is readable by anyone. Use an alias
+(as now) or a service's form ID — never a bare email address.
 
 ## SEO and sharing
 
