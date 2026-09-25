@@ -24,7 +24,7 @@ export default function MobileCta() {
       {/* Swap this for a tel: link once the real RIQS phone number replaces
           the placeholder in Contact.jsx / Footer.jsx. */}
       <a
-        href="mailto:info@riqsinspection.com"
+        href="mailto:info@ritvish.com"
         aria-label="Email RIQS"
         className="flex h-11 w-11 shrink-0 items-center justify-center rounded-md border border-steel-400/60 text-steel-100 transition-colors hover:bg-white/5"
       >

@@ -66,11 +66,39 @@ bundle, so whatever the variable holds is readable by anyone. Use an alias
   file (same dimensions) to change it. Platforms cache previews, so a change
   can take a while to appear.
 
+## Moving the site to ritvish.com
+
+The site shows `ritvish.com` as the company address, but still *lives* at the
+GitHub Pages URL: as of this writing the domain is **not registered** (DNS
+returns NXDOMAIN). Once it is, the switch is:
+
+1. **DNS first, at the registrar.** For the apex `ritvish.com`, four A records
+   to GitHub Pages — `185.199.108.153`, `185.199.109.153`, `185.199.110.153`,
+   `185.199.111.153` (check GitHub's current values, they do change). For
+   `www`, a CNAME to `venkatesh-knr.github.io`.
+2. Add `public/CNAME` containing one line: `ritvish.com`.
+3. Set `base: '/'` in `vite.config.js` — the site moves from `/RIQS_Website/`
+   to the domain root.
+4. Replace the `https://venkatesh-knr.github.io/RIQS_Website/` URLs in
+   `index.html` (canonical, `og:url`, `og:image`, JSON-LD `url`),
+   `public/sitemap.xml` and `public/robots.txt`.
+5. In Settings → Pages, set the custom domain, then tick Enforce HTTPS once
+   the certificate is issued (can take a few minutes).
+
+Do step 1 before the rest: setting the custom domain while DNS doesn't
+resolve takes the live site down, because GitHub then serves *only* the
+custom domain and redirects the github.io URL to it.
+
+Registering the domain does not by itself create email. `info@ritvish.com`
+needs a mail provider (Google Workspace, Zoho, Fastmail…) and its MX records
+before it can receive anything — and before the contact form is pointed at
+it.
+
 ## Outstanding placeholders
 
 | What | Where | Note |
 | --- | --- | --- |
-| Company domain and email | `Contact.jsx`, `Footer.jsx`, `MobileCta.jsx`, JSON-LD in `index.html` | **`riqsinspection.com` is not registered.** `info@riqsinspection.com` cannot receive mail and `www.riqsinspection.com` is a dead link |
+| Company domain and email | `Contact.jsx`, `Footer.jsx`, `MobileCta.jsx`, JSON-LD in `index.html` | The site shows **ritvish.com**, which is **not registered yet**: `info@ritvish.com` cannot receive mail until the domain exists and has MX records. The web address is plain text rather than a link until then |
 | Phone number `+974 XXX XXXX` | `Contact.jsx`, `Footer.jsx` | Also enables a `tel:` link in `MobileCta.jsx` |
 | Stats: 10+ years, 500+ inspections, 20+ inspectors, 8+ industries | `StatsBar.jsx` | **Invented figures.** Publishing unverified credentials is a trust and potentially legal risk |
 | Hero background | `Hero.jsx` | CSS blueprint pattern standing in for photography |

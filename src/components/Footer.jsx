@@ -57,8 +57,8 @@ export default function Footer() {
               Contact
             </h3>
             <ul className="mt-4 space-y-2 text-sm text-steel-100/80">
-              <li>info@riqsinspection.com</li>
-              <li>www.riqsinspection.com</li>
+              <li>info@ritvish.com</li>
+              <li>ritvish.com</li>
               <li>+974 XXX XXXX (placeholder)</li>
               <li>Doha, Qatar</li>
             </ul>

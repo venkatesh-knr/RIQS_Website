@@ -3,8 +3,10 @@ import { Mail, Globe, Phone, MapPin, AlertCircle } from "lucide-react";
 import Reveal from "./Reveal";
 
 const CONTACT_ITEMS = [
-  { icon: Mail, label: "info@riqsinspection.com", href: "mailto:info@riqsinspection.com" },
-  { icon: Globe, label: "www.riqsinspection.com", href: "https://www.riqsinspection.com" },
+  { icon: Mail, label: "info@ritvish.com", href: "mailto:info@ritvish.com" },
+  // Shown as plain text, not a link, until ritvish.com is registered: a dead
+  // link is worse than none. Restore href: "https://ritvish.com" once it resolves.
+  { icon: Globe, label: "ritvish.com", href: undefined },
   // Placeholder phone number — replace with the real number once available.
   { icon: Phone, label: "+974 XXX XXXX (placeholder)", href: undefined },
   { icon: MapPin, label: "Doha, Qatar", href: undefined },
@@ -57,7 +59,7 @@ export default function Contact() {
     const body = encodeURIComponent(
       `Name: ${form.name}\nEmail: ${form.email}\nPhone: ${form.phone}\n\n${form.message}`,
     );
-    window.location.href = `mailto:info@riqsinspection.com?subject=${subject}&body=${body}`;
+    window.location.href = `mailto:info@ritvish.com?subject=${subject}&body=${body}`;
     setStatus("sent");
   };
 
@@ -168,7 +170,7 @@ export default function Contact() {
                   <p className="text-sm text-gray-600">
                     {FORM_ENDPOINT
                       ? "We'll get back to you as soon as possible."
-                      : "If it didn't open, email us directly at info@riqsinspection.com."}
+                      : "If it didn't open, email us directly at info@ritvish.com."}
                   </p>
                 </div>
               ) : (
