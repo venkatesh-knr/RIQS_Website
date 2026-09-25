@@ -21,10 +21,14 @@ Every push to `main` triggers `.github/workflows/deploy.yml`, which builds
 the site and publishes it to GitHub Pages. No manual step.
 
 Because this is a *project* page (served from `/RIQS_Website/` rather than
-the domain root), `vite.config.js` sets `base: '/RIQS_Website/'`. If the site
-later moves to a custom domain, change that to `'/'` and update the absolute
-URLs in `index.html` (canonical, `og:url`, `og:image`, and the JSON-LD
-`url`) and in `public/sitemap.xml` and `public/robots.txt`.
+the domain root), `vite.config.js` sets `base: '/RIQS_Website/'`. **That
+stays as it is:** GitHub Pages is kept as a backup mirror after ritvish.com
+launches, so the repo's base must remain correct for it, and hosts serving
+from a domain root override it at build time with `--base=/`. The absolute
+URLs in `index.html`, `public/sitemap.xml` and `public/robots.txt` already
+name `https://ritvish.com/` — which is what a mirror should declare as
+canonical, so search results point at the real domain rather than the
+mirror.
 
 ### Cloudflare Pages (interim host)
 
@@ -92,31 +96,27 @@ bundle, so whatever the variable holds is readable by anyone. Use an alias
 `ritvish.com` is registered, with DNS on Cloudflare
 (`simone`/`kolton.ns.cloudflare.com`) and no records yet. The site shows the
 address but does not yet live there; it moves once the outstanding
-corrections below are done. Two routes, depending on the host:
+corrections are done.
 
-**Staying on GitHub Pages.** In Cloudflare, DNS → Records, add two CNAMEs,
-both with Proxy status **DNS only** — the grey cloud. An orange (proxied)
-record usually stops GitHub issuing its certificate:
+**The plan:** Cloudflare Pages serves `ritvish.com`, and GitHub Pages stays
+up as a backup mirror on its sub-path URL. Nothing in this repo changes for
+the switch — `vite.config.js` keeps the GitHub sub-path base while the
+Cloudflare build overrides it with `--base=/`, and the absolute URLs already
+name ritvish.com.
 
-| Type | Name | Target |
-| --- | --- | --- |
-| CNAME | `@` | `venkatesh-knr.github.io` |
-| CNAME | `www` | `venkatesh-knr.github.io` |
+To connect it: in the Pages project, **Custom domains → Set up a custom
+domain → `ritvish.com`**. Cloudflare adds the DNS records itself; none need
+adding by hand. Then check the live domain end to end, contact form
+included.
 
-A CNAME on the apex works because Cloudflare flattens it. Then in this repo:
-add `public/CNAME` containing `ritvish.com`, set `base: '/'` in
-`vite.config.js`, replace the `https://venkatesh-knr.github.io/RIQS_Website/`
-URLs in `index.html` (canonical, `og:url`, `og:image`, JSON-LD `url`),
-`public/sitemap.xml` and `public/robots.txt`, and last set the custom domain
-under Settings → Pages, ticking Enforce HTTPS once the certificate arrives.
-**Do the DNS records first:** setting the custom domain while DNS doesn't
-resolve takes the live site down, because GitHub then serves only that
-domain.
-
-**Staying on Cloudflare Pages.** Add no records by hand — in the Pages
-project, Custom domains → Set up a custom domain → `ritvish.com`, and
-Cloudflare creates them. The repo still needs the root base (the
-`--base=/` build command already covers it) and the absolute-URL updates.
+Should that ever change and GitHub Pages become the host for the domain
+instead, it would need: two CNAMEs in Cloudflare DNS (`@` and `www` →
+`venkatesh-knr.github.io`) with Proxy status **DNS only** — an orange
+(proxied) record usually stops GitHub issuing its certificate — plus a
+`public/CNAME` file containing `ritvish.com`, `base: '/'` in
+`vite.config.js`, and the custom domain set under Settings → Pages. Do the
+DNS first: setting the custom domain while DNS doesn't resolve takes the
+live site down.
 
 Registering the domain does not create email. `info@ritvish.com` needs
 Cloudflare Email Routing (free forwarding to a Gmail address; it adds the MX
