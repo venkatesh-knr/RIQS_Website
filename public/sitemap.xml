@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!-- Set for the ritvish.com launch. The domain is registered but not yet
+     connected, so this URL does not resolve until it is. -->
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://venkatesh-knr.github.io/RIQS_Website/</loc>
-    <lastmod>2026-09-12</lastmod>
+    <loc>https://ritvish.com/</loc>
+    <lastmod>2026-09-25</lastmod>
   </url>
 </urlset>

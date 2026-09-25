@@ -41,9 +41,11 @@ command overrides the base rather than the repo changing:
 | `NODE_VERSION` | `20` — the build needs Node 20+ and Cloudflare's default is older |
 | `VITE_FORM_ENDPOINT` | same FormSubmit endpoint as the GitHub Pages build |
 
-Both hosts build from `main`, so one push updates both. Note the canonical
-URL, `og:` tags and `public/sitemap.xml` still name the GitHub Pages address;
-point them at whichever host becomes the single home for the site.
+Both hosts build from `main`, so one push updates both. The canonical URL,
+`og:` tags, `public/sitemap.xml` and `public/robots.txt` already name
+`https://ritvish.com/`, set ahead of the launch: they are correct the moment
+the domain is connected, but until then `og:image` does not resolve, so link
+previews show no image on the preview hosts.
 
 ## Contact form
 
