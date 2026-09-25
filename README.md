@@ -26,6 +26,25 @@ later moves to a custom domain, change that to `'/'` and update the absolute
 URLs in `index.html` (canonical, `og:url`, `og:image`, and the JSON-LD
 `url`) and in `public/sitemap.xml` and `public/robots.txt`.
 
+### Cloudflare Pages (interim host)
+
+The site is also served from Cloudflare Pages at `riqs-preview.pages.dev`,
+connected to this repo and building from `main`. Pages serves from the domain
+root while `vite.config.js` targets GitHub's sub-path, so the Pages build
+command overrides the base rather than the repo changing:
+
+| Setting | Value |
+| --- | --- |
+| Build command | `npm run build -- --base=/` |
+| Output directory | `dist` |
+| Root directory | *(empty — the app is at the repo root)* |
+| `NODE_VERSION` | `20` — the build needs Node 20+ and Cloudflare's default is older |
+| `VITE_FORM_ENDPOINT` | same FormSubmit endpoint as the GitHub Pages build |
+
+Both hosts build from `main`, so one push updates both. Note the canonical
+URL, `og:` tags and `public/sitemap.xml` still name the GitHub Pages address;
+point them at whichever host becomes the single home for the site.
+
 ## Contact form
 
 The form in `src/components/Contact.jsx` posts JSON to `VITE_FORM_ENDPOINT`.
@@ -68,31 +87,38 @@ bundle, so whatever the variable holds is readable by anyone. Use an alias
 
 ## Moving the site to ritvish.com
 
-The site shows `ritvish.com` as the company address, but still *lives* at the
-GitHub Pages URL: as of this writing the domain is **not registered** (DNS
-returns NXDOMAIN). Once it is, the switch is:
+`ritvish.com` is registered, with DNS on Cloudflare
+(`simone`/`kolton.ns.cloudflare.com`) and no records yet. The site shows the
+address but does not yet live there; it moves once the outstanding
+corrections below are done. Two routes, depending on the host:
 
-1. **DNS first, at the registrar.** For the apex `ritvish.com`, four A records
-   to GitHub Pages — `185.199.108.153`, `185.199.109.153`, `185.199.110.153`,
-   `185.199.111.153` (check GitHub's current values, they do change). For
-   `www`, a CNAME to `venkatesh-knr.github.io`.
-2. Add `public/CNAME` containing one line: `ritvish.com`.
-3. Set `base: '/'` in `vite.config.js` — the site moves from `/RIQS_Website/`
-   to the domain root.
-4. Replace the `https://venkatesh-knr.github.io/RIQS_Website/` URLs in
-   `index.html` (canonical, `og:url`, `og:image`, JSON-LD `url`),
-   `public/sitemap.xml` and `public/robots.txt`.
-5. In Settings → Pages, set the custom domain, then tick Enforce HTTPS once
-   the certificate is issued (can take a few minutes).
+**Staying on GitHub Pages.** In Cloudflare, DNS → Records, add two CNAMEs,
+both with Proxy status **DNS only** — the grey cloud. An orange (proxied)
+record usually stops GitHub issuing its certificate:
 
-Do step 1 before the rest: setting the custom domain while DNS doesn't
-resolve takes the live site down, because GitHub then serves *only* the
-custom domain and redirects the github.io URL to it.
+| Type | Name | Target |
+| --- | --- | --- |
+| CNAME | `@` | `venkatesh-knr.github.io` |
+| CNAME | `www` | `venkatesh-knr.github.io` |
 
-Registering the domain does not by itself create email. `info@ritvish.com`
-needs a mail provider (Google Workspace, Zoho, Fastmail…) and its MX records
-before it can receive anything — and before the contact form is pointed at
-it.
+A CNAME on the apex works because Cloudflare flattens it. Then in this repo:
+add `public/CNAME` containing `ritvish.com`, set `base: '/'` in
+`vite.config.js`, replace the `https://venkatesh-knr.github.io/RIQS_Website/`
+URLs in `index.html` (canonical, `og:url`, `og:image`, JSON-LD `url`),
+`public/sitemap.xml` and `public/robots.txt`, and last set the custom domain
+under Settings → Pages, ticking Enforce HTTPS once the certificate arrives.
+**Do the DNS records first:** setting the custom domain while DNS doesn't
+resolve takes the live site down, because GitHub then serves only that
+domain.
+
+**Staying on Cloudflare Pages.** Add no records by hand — in the Pages
+project, Custom domains → Set up a custom domain → `ritvish.com`, and
+Cloudflare creates them. The repo still needs the root base (the
+`--base=/` build command already covers it) and the absolute-URL updates.
+
+Registering the domain does not create email. `info@ritvish.com` needs
+Cloudflare Email Routing (free forwarding to a Gmail address; it adds the MX
+records itself) or a mailbox provider before it can receive anything.
 
 ## Outstanding placeholders
 
