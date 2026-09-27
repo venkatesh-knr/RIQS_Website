@@ -59,13 +59,13 @@ same name (Settings → Secrets and variables → Actions → Variables), which 
 deploy workflow passes into the build. To point the form elsewhere, change
 the variable and re-run the workflow — no code change needed.
 
-**Currently set to** a FormSubmit endpoint — a free service that needs no
-account — in the form `https://formsubmit.co/ajax/<alias>`, where the alias
-is the random string FormSubmit issues in its activation email. Using the
-alias rather than the inbox address keeps the address out of the site's
-public code. Pointing the form at a new inbox means one fresh "Activate
-Form" email to that inbox, and **nothing is delivered until the link in it
-is clicked**.
+**Currently set to** `https://formsubmit.co/ajax/info@ritvish.com` —
+FormSubmit, a free service needing no account, delivering to the Zoho mailbox
+on the company domain. Pointing the form at any new inbox means one fresh
+"Activate Form" email to it, and **nothing is delivered until the link in
+that email is clicked**. After activation FormSubmit issues a random alias;
+swapping the address for that alias keeps the inbox address out of the site's
+public code.
 
 If the variable is unset the form falls back to a `mailto:` link, which does
 nothing for anyone on webmail — don't leave it unset.
@@ -126,7 +126,7 @@ records itself) or a mailbox provider before it can receive anything.
 
 | What | Where | Note |
 | --- | --- | --- |
-| Company domain and email | `Contact.jsx`, `Footer.jsx`, `MobileCta.jsx`, JSON-LD in `index.html` | The site shows **ritvish.com**, which is **not registered yet**: `info@ritvish.com` cannot receive mail until the domain exists and has MX records. The web address is plain text rather than a link until then |
+| Company web address | `Contact.jsx` | `info@ritvish.com` works (Zoho mail, MX live). The **web** address does not: no host serves `ritvish.com` yet, so it shows as plain text rather than a link. Restore the `href` once the domain is connected |
 | Phone number `+974 XXX XXXX` | `Contact.jsx`, `Footer.jsx` | Also enables a `tel:` link in `MobileCta.jsx` |
 | Stats: 10+ years, 500+ inspections, 20+ inspectors, 8+ industries | `StatsBar.jsx` | **Invented figures.** Publishing unverified credentials is a trust and potentially legal risk |
 | Hero background | `Hero.jsx` | CSS blueprint pattern standing in for photography |

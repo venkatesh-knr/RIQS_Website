@@ -4,8 +4,10 @@ import Reveal from "./Reveal";
 
 const CONTACT_ITEMS = [
   { icon: Mail, label: "info@ritvish.com", href: "mailto:info@ritvish.com" },
-  // Shown as plain text, not a link, until ritvish.com is registered: a dead
-  // link is worse than none. Restore href: "https://ritvish.com" once it resolves.
+  // Shown as plain text, not a link, until ritvish.com points at the site.
+  // The domain is registered and its Zoho mail works, but no host serves the
+  // web address yet, so a link would go nowhere. Restore
+  // href: "https://ritvish.com" once it resolves.
   { icon: Globe, label: "ritvish.com", href: undefined },
   // Placeholder phone number — replace with the real number once available.
   { icon: Phone, label: "+974 XXX XXXX (placeholder)", href: undefined },
@@ -26,12 +28,13 @@ const FIELDS = [
   { name: "phone", label: "Phone", type: "tel", required: false, autoComplete: "tel", half: true },
 ];
 
-// What a visitor is told when a send fails. Deliberately no fallback email
-// address: the one the site shows elsewhere doesn't exist yet, and pointing
-// people at it would lose the enquiry a second time.
+// What a visitor is told when a send fails. info@ritvish.com is a real Zoho
+// mailbox now, so the message can offer it as a fallback — it was deliberately
+// left out while that address could not receive mail.
 const ERROR_COPY = {
   offline: "You seem to be offline. Check your connection, then press Try again.",
-  rejected: "Something went wrong on our end. Please press Try again in a moment.",
+  rejected:
+    "Something went wrong on our end. Please press Try again, or email us directly at info@ritvish.com.",
 };
 
 const inputClass =
