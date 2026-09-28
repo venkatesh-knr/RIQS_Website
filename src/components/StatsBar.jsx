@@ -1,9 +1,9 @@
-// Placeholder figures — swap for RIQS's real numbers once available.
+// Figures supplied by RIQS.
 const STATS = [
-  { value: "10+", label: "Years Experience" },
-  { value: "500+", label: "Inspections Completed" },
-  { value: "20+", label: "Certified Inspectors" },
-  { value: "8+", label: "Industries Served" },
+  { value: "20+", label: "Years Experience" },
+  { value: "100+", label: "Inspections Completed" },
+  { value: "10+", label: "Certified Inspectors" },
+  { value: "7+", label: "Industries Served" },
 ];
 
 export default function StatsBar() {

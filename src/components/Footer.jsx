@@ -1,4 +1,4 @@
-import logo from "../assets/logo.webp";
+import ritvishLogo from "../assets/ritvish-logo.webp";
 
 const QUICK_LINKS = [
   { label: "Home", href: "#top" },
@@ -19,14 +19,17 @@ export default function Footer() {
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 gap-10 sm:grid-cols-3">
           <div>
-            {/* Light backing chip keeps the dark-navy wordmark legible
-                against the dark footer background. Swap src/assets/logo.webp
-                for an updated logo file later if needed. */}
+            {/* Parent brand only, as in the navbar — the RIQS mark leads the
+                hero. The light chip keeps the dark-navy wordmark legible on
+                the dark footer. */}
             <span className="inline-flex items-center rounded-md bg-white/95 px-3 py-2 shadow-sm">
-              <img src={logo} alt="RIQS logo" className="h-9 w-auto" />
+              <img src={ritvishLogo} alt="Ritvish" className="h-9 w-auto" />
             </span>
             <p className="mt-4 text-sm font-medium text-steel-300">
               Integrity | Quality | Excellence
+            </p>
+            <p className="mt-2 text-xs text-steel-100/70">
+              RIQS is a division of Ritvish Services.
             </p>
             <p className="mt-3 text-xs text-steel-100/70">
               Inspection • QA/QC • Welding • NDT • Coating • Technical
@@ -59,8 +62,7 @@ export default function Footer() {
             <ul className="mt-4 space-y-2 text-sm text-steel-100/80">
               <li>info@ritvish.com</li>
               <li>ritvish.com</li>
-              <li>+974 XXX XXXX (placeholder)</li>
-              <li>Doha, Qatar</li>
+              <li>Trichy, Tamil Nadu, India</li>
             </ul>
           </div>
         </div>

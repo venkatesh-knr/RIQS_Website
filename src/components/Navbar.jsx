@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Menu, X } from "lucide-react";
-import logo from "../assets/logo.webp";
+import ritvishLogo from "../assets/ritvish-logo.webp";
 
 // In page order, one entry per section, so every section is reachable from
 // the nav and the active-section highlight below can track all of them.
@@ -16,24 +16,25 @@ const NAV_LINKS = [
   { label: "Contact", href: "#contact" },
 ];
 
-// Logo image lives at src/assets/logo.webp (icon + wordmark, cropped and
-// cleaned up from the source file RIQS_logo.jpg, then resized to 80px tall —
-// 2x the largest rendered size). Swap the import above to replace it with an
-// updated logo file later; keep it small, the original 520px PNG was 145KB.
+// Ritvish, the parent brand, is the only mark in the navbar; the RIQS
+// division mark leads the hero instead. The wordmark is dark navy, hence the
+// light chip behind it.
+//
+// ritvish-logo.webp is the supplied artwork trimmed to mark + wordmark — its
+// two tagline lines are illegible at this size — and resized to 80px tall,
+// 2x the largest rendered size.
 //
 // It links to #top, the zero-height anchor at the start of the page in
 // App.jsx, rather than to this fixed header.
 function LogoBadge() {
   return (
     <a href="#top" className="flex items-center gap-3">
-      {/* Light backing chip: the logo's wordmark is dark navy, so it needs a
-          light surface to stay legible against the dark navbar background. */}
       <span className="flex items-center rounded-md bg-white/95 px-2.5 py-1.5 shadow-sm">
-        <img src={logo} alt="RIQS logo" className="h-8 w-auto sm:h-9" />
+        <img src={ritvishLogo} alt="Ritvish" className="h-8 w-auto sm:h-9" />
       </span>
       <span className="hidden text-[11px] font-medium leading-tight text-steel-300 md:block">
-        Ritvish Inspection
-        <br />& Quality Services
+        Inspection &amp;
+        <br />Quality Services
       </span>
     </a>
   );

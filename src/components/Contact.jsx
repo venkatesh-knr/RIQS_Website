@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Mail, Globe, Phone, MapPin, AlertCircle } from "lucide-react";
+import { Mail, Globe, MapPin, AlertCircle } from "lucide-react";
 import Reveal from "./Reveal";
 
 const CONTACT_ITEMS = [
@@ -9,9 +9,7 @@ const CONTACT_ITEMS = [
   // web address yet, so a link would go nowhere. Restore
   // href: "https://ritvish.com" once it resolves.
   { icon: Globe, label: "ritvish.com", href: undefined },
-  // Placeholder phone number — replace with the real number once available.
-  { icon: Phone, label: "+974 XXX XXXX (placeholder)", href: undefined },
-  { icon: MapPin, label: "Doha, Qatar", href: undefined },
+  { icon: MapPin, label: "Trichy, Tamil Nadu, India", href: undefined },
 ];
 
 // Where the form posts. For the deployed site VITE_FORM_ENDPOINT comes from a

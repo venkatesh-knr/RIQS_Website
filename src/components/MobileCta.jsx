@@ -21,8 +21,8 @@ export default function MobileCta() {
         visible ? "translate-y-0" : "translate-y-full"
       }`}
     >
-      {/* Swap this for a tel: link once the real RIQS phone number replaces
-          the placeholder in Contact.jsx / Footer.jsx. */}
+      {/* Email button: no phone number is published. Swap this for a tel: link
+          if a number is added to Contact.jsx / Footer.jsx later. */}
       <a
         href="mailto:info@ritvish.com"
         aria-label="Email RIQS"
