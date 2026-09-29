@@ -257,6 +257,16 @@ export default function Contact() {
                         ? "Try again"
                         : "Submit"}
                   </button>
+
+                  <p className="text-xs leading-relaxed text-gray-500 sm:col-span-2">
+                    We use these details only to reply to your enquiry.{" "}
+                    <a
+                      href={`${import.meta.env.BASE_URL}privacy.html`}
+                      className="font-medium text-steel-600 underline hover:text-steel-500"
+                    >
+                      Privacy Notice
+                    </a>
+                  </p>
                 </div>
               )}
             </form>

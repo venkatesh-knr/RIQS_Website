@@ -7,6 +7,8 @@ const QUICK_LINKS = [
   { label: "Industries", href: "#industries" },
   { label: "Certifications", href: "#certifications" },
   { label: "Contact", href: "#contact" },
+  // A separate page, so it needs the build's base path, not a bare "#".
+  { label: "Privacy Notice", href: `${import.meta.env.BASE_URL}privacy.html` },
 ];
 
 export default function Footer() {

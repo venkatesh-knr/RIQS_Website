@@ -1,5 +1,6 @@
 import { ShieldCheck, Award, HardHat, Star, Users } from "lucide-react";
 import Reveal from "./Reveal";
+import qualityPhoto from "../assets/quality-photo.webp";
 
 const VALUES = [
   {
@@ -34,27 +35,23 @@ export default function QualityIntegrity() {
     <section id="quality" className="section-y bg-navy-900">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 gap-10 lg:grid-cols-5 lg:gap-14">
-          {/* Supporting visual block — a large stylized icon panel standing
-              in for a photo. On desktop it stretches to match the text
-              column rather than being a fixed square, which was the tallest
-              thing in the section. Drop a real photo in as
-              `src/assets/quality-photo.jpg` and swap the pattern background
-              for a cover-and-centered background-image if preferred. */}
+          {/* A jack-up rig at sunset, RIQS's own photograph. On desktop the
+              panel stretches to the height of the text beside it (min-h-56
+              keeps it substantial on mobile) and object-cover crops the
+              portrait photo to fit. The 92% vertical focus keeps the rig
+              and a strip of sea in frame; the rig is in the photo's bottom
+              fifth, so a centred crop would show only sky. */}
           <div className="order-2 lg:order-1 lg:col-span-2">
-            <div className="relative flex h-full min-h-56 items-center justify-center overflow-hidden rounded-2xl bg-navy-950">
+            <div className="relative h-full min-h-56 overflow-hidden rounded-2xl bg-navy-950">
+              <img
+                src={qualityPhoto}
+                alt="A jack-up drilling rig silhouetted against a sunset over open water"
+                loading="lazy"
+                className="absolute inset-0 h-full w-full object-cover object-[50%_92%]"
+              />
               <div
                 aria-hidden="true"
-                className="pointer-events-none absolute inset-0 opacity-25"
-                style={{
-                  backgroundImage:
-                    "linear-gradient(rgba(139,179,217,0.2) 1px, transparent 1px), linear-gradient(90deg, rgba(139,179,217,0.2) 1px, transparent 1px)",
-                  backgroundSize: "36px 36px",
-                }}
-              />
-              <ShieldCheck
-                className="relative text-steel-500/70"
-                size={120}
-                strokeWidth={1}
+                className="pointer-events-none absolute inset-0 bg-gradient-to-t from-navy-950/40 to-transparent"
               />
             </div>
           </div>

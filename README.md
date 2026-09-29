@@ -86,7 +86,7 @@ bundle, so whatever the variable holds is readable by anyone. Use an alias
   site lives under `/RIQS_Website/` that file is not consulted; it takes
   effect after a move to a custom domain. Until then, submit the sitemap URL
   directly in Google Search Console.
-- `public/og-image.png` (1200×630) is the preview card shown when the link is
+- `public/og-image.jpg` (1200×630) is the preview card shown when the link is
   shared on WhatsApp, LinkedIn and similar. It's a static image; replace the
   file (same dimensions) to change it. Platforms cache previews, so a change
   can take a while to appear.
@@ -127,14 +127,34 @@ records itself) or a mailbox provider before it can receive anything.
 | What | Where | Note |
 | --- | --- | --- |
 | Company web address | `Contact.jsx` | `info@ritvish.com` works (Zoho mail, MX live). The **web** address does not: no host serves `ritvish.com` yet, so it shows as plain text rather than a link. Restore the `href` once the domain is connected |
-| Phone number `+974 XXX XXXX` | `Contact.jsx`, `Footer.jsx` | Also enables a `tel:` link in `MobileCta.jsx` |
-| Stats: 10+ years, 500+ inspections, 20+ inspectors, 8+ industries | `StatsBar.jsx` | **Invented figures.** Publishing unverified credentials is a trust and potentially legal risk |
-| Hero background | `Hero.jsx` | CSS blueprint pattern standing in for photography |
-| Supporting visuals | `About.jsx`, `QualityIntegrity.jsx` | Icon panels standing in for photos |
+| About panel | `About.jsx` | Icon and stat panel standing in for a photograph. Hero and Quality & Integrity now use real photos |
+| Privacy Notice wording | `privacy.html` | A plain-language draft written from what the site actually does. Have the business owner (and, if wanted, a lawyer) read it: in particular the "we don't sell your details" line and the retention wording are commitments made on RIQS's behalf |
 
-Real photography of inspectors and facilities is the single largest
-credibility gap versus comparable firms (HQTS, SGS, Intertek), all of which
-lead with it.
+Resolved: the stats (20+ / 100+ / 10+ / 7+) are RIQS's own figures, the
+placeholder phone number is gone, and the location is Trichy, Tamil Nadu.
+
+Real photography of inspectors and facilities remains the biggest credibility
+lever versus comparable firms (HQTS, SGS, Intertek), all of which lead with
+it. The two offshore photos now in use are a start; photos of people at work
+would add more.
+
+## Images and photos
+
+Originals go in `/images` (git-ignored: they are multi-MB and camera photos
+carry EXIF/GPS data). Only optimised copies in `src/assets/` are published —
+resized, converted to WebP, metadata stripped (`hero-bg.webp` 1920px,
+`quality-photo.webp` 900px).
+
+The favicon and iOS icon are the Ritvish mark; regenerate them from the
+supplied artwork if it changes. `public/og-image.jpg` is the share card.
+
+## Extra pages
+
+`privacy.html` and `404.html` are separate entries in `vite.config.js`, not
+part of the React app, so they share the stylesheet and get the right base
+path from `%BASE_URL%`. GitHub Pages and Cloudflare Pages both serve
+`404.html` for an unknown URL. If analytics or cookies are ever added,
+`privacy.html` must be updated to say so.
 
 ## Structure
 

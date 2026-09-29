@@ -22,3 +22,7 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Original camera photos: multi-MB and may carry GPS/EXIF data. Only the
+# optimised, metadata-stripped copies in src/assets are published.
+/images
