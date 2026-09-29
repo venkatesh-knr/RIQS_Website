@@ -10,6 +10,7 @@ import WhyUs from "./components/WhyUs";
 import QualityIntegrity from "./components/QualityIntegrity";
 import WorkingWithRiqs from "./components/WorkingWithRiqs";
 import Contact from "./components/Contact";
+import Careers from "./components/Careers";
 import Footer from "./components/Footer";
 import BackToTop from "./components/BackToTop";
 import MobileCta from "./components/MobileCta";
@@ -39,6 +40,7 @@ function App() {
       <QualityIntegrity />
       <WorkingWithRiqs />
       <Contact />
+      <Careers />
       <Footer />
       <BackToTop />
       <MobileCta />
