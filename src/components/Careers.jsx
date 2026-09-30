@@ -14,7 +14,7 @@ const DISCIPLINES = [
 
 // Applications arrive by plain email to their own mailbox, kept apart from
 // quote requests. The mailbox has to exist in Zoho before this goes live.
-const CAREERS_EMAIL = "careers@ritvish.com";
+const CV_EMAIL = "quality@ritvish.com";
 
 // A slim band between Contact and the footer rather than a full section: with
 // no open roles to list it would be mostly empty, and it stays out of the nav
@@ -53,11 +53,11 @@ export default function Careers() {
 
         <Reveal delay={120} className="lg:col-span-2 lg:justify-self-end">
           <a
-            href={`mailto:${CAREERS_EMAIL}?subject=${encodeURIComponent("Career enquiry")}`}
+            href={`mailto:${CV_EMAIL}?subject=${encodeURIComponent("Career enquiry")}`}
             className="inline-flex w-full items-center justify-center gap-2.5 rounded-md bg-navy-900 px-7 py-3.5 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-navy-800 sm:w-auto"
           >
             <Mail size={18} aria-hidden="true" />
-            {CAREERS_EMAIL}
+            {CV_EMAIL}
           </a>
           <p className="mt-3 text-xs leading-relaxed text-gray-500">
             Attach your CV to your email.{" "}

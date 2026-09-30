@@ -26,13 +26,15 @@ const FIELDS = [
   { name: "phone", label: "Phone", type: "tel", required: false, autoComplete: "tel", half: true },
 ];
 
-// What a visitor is told when a send fails. info@ritvish.com is a real Zoho
-// mailbox now, so the message can offer it as a fallback — it was deliberately
-// left out while that address could not receive mail.
+// What a visitor is told when a send fails. The form depends on a free
+// third-party service that can go down — it returned HTTP 500 for every
+// address on 30 Sept 2026 — so a failed send is never a dead end: the error
+// box also offers to open the visitor's own email app with their message
+// already filled in, addressed to the real info@ritvish.com mailbox.
 const ERROR_COPY = {
   offline: "You seem to be offline. Check your connection, then press Try again.",
   rejected:
-    "Something went wrong on our end. Please press Try again, or email us directly at info@ritvish.com.",
+    "Our message service isn't responding right now. Press Try again in a moment, or send it by email instead.",
 };
 
 const inputClass =
@@ -53,14 +55,18 @@ export default function Contact() {
   // Falls back to opening the visitor's mail client when no endpoint is
   // configured. That fallback silently fails for anyone on webmail, which is
   // why configuring FORM_ENDPOINT matters for real lead capture.
-  const submitViaMailto = () => {
+  const mailtoHref = () => {
     const subject = encodeURIComponent(
       `Quote Request from ${form.name || "Website Visitor"}`,
     );
     const body = encodeURIComponent(
       `Name: ${form.name}\nEmail: ${form.email}\nPhone: ${form.phone}\n\n${form.message}`,
     );
-    window.location.href = `mailto:info@ritvish.com?subject=${subject}&body=${body}`;
+    return `mailto:info@ritvish.com?subject=${subject}&body=${body}`;
+  };
+
+  const submitViaMailto = () => {
+    window.location.href = mailtoHref();
     setStatus("sent");
   };
 
@@ -93,7 +99,11 @@ export default function Contact() {
       }
       setStatus("sent");
       setForm({ name: "", email: "", phone: "", message: "" });
-    } catch {
+    } catch (err) {
+      // Logged so a failure can be diagnosed from the browser console:
+      // "Failed to fetch" with no status usually means the service answered
+      // with an error the browser hides (a 5xx carries no CORS headers).
+      console.error("Contact form send failed:", err);
       // The form keeps what the visitor typed, so a retry is one click.
       setErrorKind(navigator.onLine === false ? "offline" : "rejected");
       setStatus("error");
@@ -242,6 +252,12 @@ export default function Contact() {
                           {ERROR_COPY[errorKind] ?? ERROR_COPY.rejected} Everything
                           you typed is still in the form.
                         </p>
+                        <a
+                          href={mailtoHref()}
+                          className="mt-2 inline-block font-semibold underline hover:text-red-900"
+                        >
+                          Email it to info@ritvish.com instead
+                        </a>
                       </div>
                     </div>
                   )}
