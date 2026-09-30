@@ -29,6 +29,9 @@ jobs:
           # can change without a code edit. Unset falls back to mailto:.
           # The value is embedded in the public JS bundle either way.
           VITE_FORM_ENDPOINT: ${{ vars.VITE_FORM_ENDPOINT }}
+          # Backup delivery service, tried if the one above fails. Unset
+          # (an empty string) simply skips it.
+          VITE_WEB3FORMS_KEY: ${{ vars.VITE_WEB3FORMS_KEY }}
       - uses: actions/upload-pages-artifact@v3
         with:
           path: dist

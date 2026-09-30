@@ -12,11 +12,63 @@ const CONTACT_ITEMS = [
   { icon: MapPin, label: "Trichy, Tamil Nadu, India", href: undefined },
 ];
 
-// Where the form posts. For the deployed site VITE_FORM_ENDPOINT comes from a
-// GitHub repository variable the deploy workflow passes into the build;
-// locally, put it in .env.local. Unset falls back to a mailto: link. Any
-// service that accepts a JSON POST works — see README.md.
+// Form delivery. Both settings come from GitHub repository variables that the
+// deploy workflow passes into the build (locally, put them in .env.local):
+//   VITE_FORM_ENDPOINT   FormSubmit's URL, tried first
+//   VITE_WEB3FORMS_KEY   a Web3Forms access key, tried if the first fails
+// Each service is a free third party that can go down — FormSubmit returned
+// HTTP 500 for every address on 30 Sept 2026 — so a send tries them in order
+// and only fails if all do. A service with no setting is simply skipped, and
+// with none configured the form falls back to a mailto: link. The Web3Forms
+// key is safe to ship in the page: it can only submit to the inbox it was
+// issued for. See README.md.
 const FORM_ENDPOINT = import.meta.env.VITE_FORM_ENDPOINT;
+const WEB3FORMS_KEY = import.meta.env.VITE_WEB3FORMS_KEY;
+
+const SEND_TIMEOUT_MS = 12000;
+
+// POSTs JSON and throws unless the service clearly accepted it. A 200 alone
+// isn't proof of delivery: FormSubmit answers 200 with success:"false" while
+// its destination address still awaits the one-time activation click.
+async function postJson(url, payload) {
+  const response = await fetch(url, {
+    method: "POST",
+    headers: { "Content-Type": "application/json", Accept: "application/json" },
+    body: JSON.stringify(payload),
+    // Without a timeout a hung service would leave the button on "Sending…"
+    // and never reach the next service.
+    signal: AbortSignal.timeout?.(SEND_TIMEOUT_MS),
+  });
+  if (!response.ok) throw new Error(`HTTP ${response.status}`);
+  const result = await response.json().catch(() => ({}));
+  if (result.success === false || result.success === "false") {
+    throw new Error(result.message || "Submission was not accepted");
+  }
+}
+
+const subjectFor = (form) =>
+  `Quote request from ${form.name || "website visitor"}`;
+
+const PROVIDERS = [
+  FORM_ENDPOINT && {
+    name: "FormSubmit",
+    send: (form) =>
+      postJson(FORM_ENDPOINT, { ...form, _subject: subjectFor(form) }),
+  },
+  WEB3FORMS_KEY && {
+    name: "Web3Forms",
+    send: (form) =>
+      postJson("https://api.web3forms.com/submit", {
+        ...form,
+        access_key: WEB3FORMS_KEY,
+        subject: subjectFor(form),
+        from_name: "RIQS website",
+      }),
+  },
+].filter(Boolean);
+
+// True when at least one delivery service is configured.
+const HAS_SERVICE = PROVIDERS.length > 0;
 
 // `half` fields sit side by side from the sm breakpoint, keeping the form
 // short enough for the section to fit a laptop window.
@@ -54,7 +106,7 @@ export default function Contact() {
 
   // Falls back to opening the visitor's mail client when no endpoint is
   // configured. That fallback silently fails for anyone on webmail, which is
-  // why configuring FORM_ENDPOINT matters for real lead capture.
+  // why configuring a delivery service matters for real lead capture.
   const mailtoHref = () => {
     const subject = encodeURIComponent(
       `Quote Request from ${form.name || "Website Visitor"}`,
@@ -73,41 +125,35 @@ export default function Contact() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!FORM_ENDPOINT) {
+    if (!HAS_SERVICE) {
       submitViaMailto();
       return;
     }
 
     setStatus("sending");
     setErrorKind(null);
-    try {
-      const response = await fetch(FORM_ENDPOINT, {
-        method: "POST",
-        headers: { "Content-Type": "application/json", Accept: "application/json" },
-        body: JSON.stringify({
-          ...form,
-          _subject: `Quote request from ${form.name || "website visitor"}`,
-        }),
-      });
-      if (!response.ok) throw new Error(`Request failed: ${response.status}`);
-      // A 200 alone isn't proof of delivery: FormSubmit answers 200 with
-      // success:"false" while its destination address still awaits the
-      // one-time activation click, so check the body too.
-      const result = await response.json().catch(() => ({}));
-      if (result.success === false || result.success === "false") {
-        throw new Error(result.message || "Submission was not accepted");
+
+    // Try each service in turn and stop at the first that accepts the
+    // message. Sequential, never parallel: sending to both would deliver the
+    // enquiry twice.
+    for (const provider of PROVIDERS) {
+      try {
+        await provider.send(form);
+        setStatus("sent");
+        setForm({ name: "", email: "", phone: "", message: "" });
+        return;
+      } catch (err) {
+        // Logged so a failure can be diagnosed from the browser console:
+        // "Failed to fetch" with no status usually means the service answered
+        // with an error the browser hides (a 5xx carries no CORS headers).
+        console.warn(`Contact form: ${provider.name} failed`, err);
       }
-      setStatus("sent");
-      setForm({ name: "", email: "", phone: "", message: "" });
-    } catch (err) {
-      // Logged so a failure can be diagnosed from the browser console:
-      // "Failed to fetch" with no status usually means the service answered
-      // with an error the browser hides (a 5xx carries no CORS headers).
-      console.error("Contact form send failed:", err);
-      // The form keeps what the visitor typed, so a retry is one click.
-      setErrorKind(navigator.onLine === false ? "offline" : "rejected");
-      setStatus("error");
     }
+
+    console.error("Contact form: every delivery service failed");
+    // The form keeps what the visitor typed, so a retry is one click.
+    setErrorKind(navigator.onLine === false ? "offline" : "rejected");
+    setStatus("error");
   };
 
   return (
@@ -174,12 +220,12 @@ export default function Contact() {
                   role="status"
                 >
                   <p className="text-lg font-semibold text-navy-900">
-                    {FORM_ENDPOINT
+                    {HAS_SERVICE
                       ? "Thank you — your message has been sent."
                       : "Thank you — your email client should now be open."}
                   </p>
                   <p className="text-sm text-gray-600">
-                    {FORM_ENDPOINT
+                    {HAS_SERVICE
                       ? "We'll get back to you as soon as possible."
                       : "If it didn't open, email us directly at info@ritvish.com."}
                   </p>

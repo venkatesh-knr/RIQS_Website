@@ -53,31 +53,47 @@ previews show no image on the preview hosts.
 
 ## Contact form
 
-The form in `src/components/Contact.jsx` posts JSON to `VITE_FORM_ENDPOINT`.
-For the deployed site that value is a GitHub **repository variable** of the
-same name (Settings → Secrets and variables → Actions → Variables), which the
-deploy workflow passes into the build. To point the form elsewhere, change
-the variable and re-run the workflow — no code change needed.
+The form in `src/components/Contact.jsx` sends through up to **two free
+delivery services, tried in order**, because each is a third party that can
+go down: FormSubmit returned HTTP 500 for every address on 30 Sept 2026. The
+first that accepts the message wins; only if all fail does the visitor see an
+error, and even then the error box offers "Email it to info@ritvish.com
+instead", a `mailto:` link pre-filled with what they typed. Services are
+tried one after another, never together, so an enquiry is never delivered
+twice.
 
-**Currently set to** `https://formsubmit.co/ajax/info@ritvish.com` —
-FormSubmit, a free service needing no account, delivering to the Zoho mailbox
-on the company domain. Pointing the form at any new inbox means one fresh
-"Activate Form" email to it, and **nothing is delivered until the link in
-that email is clicked**. After activation FormSubmit issues a random alias;
-swapping the address for that alias keeps the inbox address out of the site's
-public code.
+| Order | Service | Setting (GitHub repository variable) |
+| --- | --- | --- |
+| 1 | FormSubmit | `VITE_FORM_ENDPOINT`, e.g. `https://formsubmit.co/ajax/info@ritvish.com` |
+| 2 | Web3Forms | `VITE_WEB3FORMS_KEY`, an access key |
 
-If the variable is unset the form falls back to a `mailto:` link, which does
-nothing for anyone on webmail — don't leave it unset.
+Set them under Settings → Secrets and variables → Actions → **Variables**;
+the deploy workflow passes them into the build, so changing one needs a
+workflow re-run but no code change. A service whose setting is empty is
+skipped. With neither set, the form falls back to a `mailto:` link, which
+does nothing for anyone on webmail — don't leave both unset. For local
+testing, put the same variables in `.env.local` (git-ignored).
 
-To switch to Formspree (or Web3Forms, Getform, Basin), create the form in
-that service and set the variable to its endpoint URL. The form treats a
-non-2xx response, or a JSON body with `success: false`, as a failed send. For
-local testing, put the same variable in `.env.local`.
+**FormSubmit** needs no account. Pointing it at a new inbox means one fresh
+"Activate Form" email to that inbox, and **nothing is delivered until the
+link in it is clicked**. After activation it issues a random alias;
+swapping the address for that alias keeps the inbox address out of the
+site's public code.
+
+**Web3Forms** needs no account either: enter the destination address at
+web3forms.com and it emails you an access key. Messages are delivered to
+that address. It refuses server-side calls on the free plan, so it can only
+be tested from a real browser page, not `curl`. The key is designed to be
+public (it can only submit to its own inbox), unlike a password.
+
+A request counts as failed on a non-2xx response, a JSON body with
+`success: false` (FormSubmit answers 200 with that until activated), a
+network error, or no answer within 12 seconds.
 
 **Privacy:** `VITE_`-prefixed values are embedded in the public JavaScript
-bundle, so whatever the variable holds is readable by anyone. Use an alias
-(as now) or a service's form ID — never a bare email address.
+bundle, so whatever they hold is readable by anyone. Use an alias or a key
+(as here) — never a bare email address. `privacy.html` names the services
+that handle messages; update it if the list changes.
 
 ## SEO and sharing
 
