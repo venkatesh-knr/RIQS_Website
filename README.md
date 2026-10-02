@@ -107,43 +107,49 @@ that handle messages; update it if the list changes.
   file (same dimensions) to change it. Platforms cache previews, so a change
   can take a while to appear.
 
-## Moving the site to ritvish.com
+## Hosting: staging and production
 
-`ritvish.com` is registered, with DNS on Cloudflare
-(`simone`/`kolton.ns.cloudflare.com`) and no records yet. The site shows the
-address but does not yet live there; it moves once the outstanding
-corrections are done.
+ritvish.com is **live**, served by Cloudflare Pages. Two Cloudflare projects
+build from this one repo, so a push can be tested before it reaches the real
+site:
 
-**The plan:** Cloudflare Pages serves `ritvish.com`, and GitHub Pages stays
-up as a backup mirror on its sub-path URL. Nothing in this repo changes for
-the switch — `vite.config.js` keeps the GitHub sub-path base while the
-Cloudflare build overrides it with `--base=/`, and the absolute URLs already
-name ritvish.com.
+| | Staging | Production |
+| --- | --- | --- |
+| Cloudflare project | `riqs-preview` | `ritvish` |
+| GitHub branch it builds | `main` | `production` |
+| Address | `riqs-preview.pages.dev` | `ritvish.com`, `www.ritvish.com` |
 
-To connect it: in the Pages project, **Custom domains → Set up a custom
-domain → `ritvish.com`**. Cloudflare adds the DNS records itself; none need
-adding by hand. Then check the live domain end to end, contact form
-included.
+Everyday work goes to `main` and shows on staging within a minute. The real
+site changes only when `production` is updated:
 
-Should that ever change and GitHub Pages become the host for the domain
-instead, it would need: two CNAMEs in Cloudflare DNS (`@` and `www` →
-`venkatesh-knr.github.io`) with Proxy status **DNS only** — an orange
-(proxied) record usually stops GitHub issuing its certificate — plus a
-`public/CNAME` file containing `ritvish.com`, `base: '/'` in
-`vite.config.js`, and the custom domain set under Settings → Pages. Do the
-DNS first: setting the custom domain while DNS doesn't resolve takes the
-live site down.
+```bash
+git push origin main:production   # release exactly what main contains
+```
 
-Registering the domain does not create email. `info@ritvish.com` needs
-Cloudflare Email Routing (free forwarding to a Gmail address; it adds the MX
-records itself) or a mailbox provider before it can receive anything.
+To undo a release, roll back in the `ritvish` project (Deployments).
+
+Both projects need the same build settings (build command
+`npm run build -- --base=/`, output directory `dist`) and the same three
+variables: `NODE_VERSION` (20), `VITE_FORM_ENDPOINT` and `VITE_WEB3FORMS_KEY`.
+Cloudflare reads variables only when a build starts, so changing one needs a
+new build (retry the deployment, or push a commit).
+
+GitHub Pages, which builds from `main`, is a backup mirror. `vite.config.js`
+keeps its sub-path base for that, and the Cloudflare builds override it with
+`--base=/`.
+
+DNS for the domain is on Cloudflare. The Zoho mail records (MX, SPF and the
+verification entry) must not be touched when changing website records.
+
+FormSubmit's activation is tied to the website address as well as the inbox,
+so a new address such as ritvish.com needs the activation link in the inbox
+clicked once. Until then the form uses the Web3Forms backup.
 
 ## Outstanding placeholders
 
 | What | Where | Note |
 | --- | --- | --- |
 | Company web address | `Contact.jsx` | Links to `https://ritvish.com`, which is live on Cloudflare Pages |
-| CV mailbox | `Careers.jsx`, `privacy.html` | The Careers band points at `quality@ritvish.com`. **That mailbox must exist in Zoho**, or CVs bounce. Until it does, the band is advertising an address that does not work |
 | About panel | `About.jsx` | Icon and stat panel standing in for a photograph. Hero and Quality & Integrity now use real photos |
 | Privacy Notice wording | `privacy.html` | A plain-language draft written from what the site actually does. Have the business owner (and, if wanted, a lawyer) read it: in particular the "we don't sell your details" line and the retention wording are commitments made on RIQS's behalf |
 

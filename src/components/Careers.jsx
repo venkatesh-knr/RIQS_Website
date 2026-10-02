@@ -13,7 +13,7 @@ const DISCIPLINES = [
 ];
 
 // Applications arrive by plain email to their own mailbox, kept apart from
-// quote requests. The mailbox has to exist in Zoho before this goes live.
+// quote requests. quality@ritvish.com is a Zoho mailbox on the company domain.
 const CV_EMAIL = "quality@ritvish.com";
 
 // A slim band between Contact and the footer rather than a full section: with
