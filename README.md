@@ -142,7 +142,7 @@ records itself) or a mailbox provider before it can receive anything.
 
 | What | Where | Note |
 | --- | --- | --- |
-| Company web address | `Contact.jsx` | `info@ritvish.com` works (Zoho mail, MX live). The **web** address does not: no host serves `ritvish.com` yet, so it shows as plain text rather than a link. Restore the `href` once the domain is connected |
+| Company web address | `Contact.jsx` | Links to `https://ritvish.com`, which is live on Cloudflare Pages |
 | CV mailbox | `Careers.jsx`, `privacy.html` | The Careers band points at `quality@ritvish.com`. **That mailbox must exist in Zoho**, or CVs bounce. Until it does, the band is advertising an address that does not work |
 | About panel | `About.jsx` | Icon and stat panel standing in for a photograph. Hero and Quality & Integrity now use real photos |
 | Privacy Notice wording | `privacy.html` | A plain-language draft written from what the site actually does. Have the business owner (and, if wanted, a lawyer) read it: in particular the "we don't sell your details" line and the retention wording are commitments made on RIQS's behalf |

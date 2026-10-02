@@ -4,11 +4,7 @@ import Reveal from "./Reveal";
 
 const CONTACT_ITEMS = [
   { icon: Mail, label: "info@ritvish.com", href: "mailto:info@ritvish.com" },
-  // Shown as plain text, not a link, until ritvish.com points at the site.
-  // The domain is registered and its Zoho mail works, but no host serves the
-  // web address yet, so a link would go nowhere. Restore
-  // href: "https://ritvish.com" once it resolves.
-  { icon: Globe, label: "ritvish.com", href: undefined },
+  { icon: Globe, label: "ritvish.com", href: "https://ritvish.com" },
   { icon: MapPin, label: "Trichy, Tamil Nadu, India", href: undefined },
 ];
 
