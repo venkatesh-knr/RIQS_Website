@@ -1,8 +1,6 @@
-# Crawlers only read robots.txt at a domain's root. The site currently runs
-# from a GitHub Pages sub-path (/RIQS_Website/) and a Cloudflare Pages preview,
-# where this file is ignored; it takes effect once ritvish.com is connected.
-# The sitemap URL below is set for that launch and will not resolve until the
-# domain is live.
+# Crawlers only read robots.txt at a domain's root, so this file takes effect
+# on ritvish.com. The GitHub Pages backup mirror serves from a sub-path, where
+# it is ignored; its pages name ritvish.com as their canonical address anyway.
 User-agent: *
 Allow: /
 
