@@ -32,7 +32,11 @@ function LogoBadge() {
       <span className="flex items-center rounded-md bg-white/95 px-2.5 py-1.5 shadow-sm">
         <img src={ritvishLogo} alt="Ritvish" className="h-8 w-auto sm:h-9" />
       </span>
-      <span className="hidden text-[11px] font-medium leading-tight text-steel-300 md:block">
+      {/* Shown at every width: it was hidden below 768px, which left phones
+          with a logo alone. At 320px the logo, this text and the menu button
+          need about 250px, so it fits; it steps down a size on the narrowest
+          screens and whitespace-nowrap stops "Quality Services" breaking. */}
+      <span className="whitespace-nowrap text-[10px] font-medium leading-tight text-steel-300 min-[400px]:text-[11px]">
         Inspection &amp;
         <br />Quality Services
       </span>
